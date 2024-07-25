@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import UserContext from '../context/userContext';
+import logout from './functions/logout';
 import '../css/global.css'
 
 const navbar = () => {
@@ -9,15 +10,15 @@ const navbar = () => {
   const navigate = useNavigate();
   const location = useLocation()
 
- 
+
 
 
   return (
     <nav className=" navbar d-flex justify-content-between align-items-center">
       <div className="name my-1 mx-2">
-      ClassVibe
+        ClassVibe
       </div>
-      <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2">
+      <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2 user-select-none">
 
         <div className="home mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/" className={`text-decoration-none text-black ${location.pathname === "/" ? 'fw-semibold' : 'fw-normal'}`} >Home</Link></div>
         <div className="about mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/about" className={` text-decoration-none text-black  ${location.pathname === "/about" ? 'fw-semibold' : 'fw-normal'}`}>About</Link></div>
@@ -33,9 +34,13 @@ const navbar = () => {
               <path transform="translate(939)" d="m0 0" />
             </svg>
           </div>
-          <ul className="dropdown-menu translate-middle-x" style={{ minWidth: '100px', width: "100px"  }}>
-            <li><a className="dropdown-item" >Log-in</a></li>
-            <li><a className="dropdown-item" >Log-out</a></li>
+          <ul className="dropdown-menu translate-middle-x" style={{ minWidth: '100px', width: "100px" }}>
+          <li><Link to='/login' className="dropdown-item text-decoration-none" >Log-in</Link></li>
+            <li><a className="dropdown-item" onClick={() => {
+              logout()
+              value.setislogout(true)
+              navigate('/login')
+            }} >Log-out</a></li>
           </ul>
         </div>
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import UserContext from '../../context/userContext';
 import { Link, useNavigate } from 'react-router-dom';
-import loginImg from "../../assets/login.png"
 import Alert from '../alert';
 import addCookie from '../functions/addCookie';
 

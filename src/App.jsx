@@ -18,8 +18,6 @@ function App() {
   const forntendServer = import.meta.env.VITE_REACT_FRONTEND
   const authtoken = getCookie("authtoken")
   const userId = getCookie("userId")
-  
-  console.log(backendServer,forntendServer)
 
   //set islogout id there is any authtoken and userid both peresent
   useEffect(() => {

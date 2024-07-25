@@ -23,7 +23,6 @@ const signup = () => {
 
   //function to login
   const signUp = async (password, parentElem) => {
-    console.log(value.backendServer, value.forntendServer , `${value.backendServer}/api/auth/checkUser`)
     const res = await fetch(`${value.backendServer}/api/auth/create`, {
       method: "POST",
       headers: {
