@@ -24,7 +24,6 @@ const home = () => {
   const checkUser = async () => {
     const authtoken = getCookie("authtoken")
     const userId = getCookie("userId")
-    console.log(value.backendServer, value.forntendServer , `${value.backendServer}/api/auth/checkUser`)
     if (!authtoken || !userId) {
       navigate('/login')
     } else {
