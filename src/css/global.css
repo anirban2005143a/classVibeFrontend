@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Margarine&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
+
+.navbar .links .home , .navbar .links .about{
+    transition: all 300ms ease;
+}
+.navbar .links .home:hover , .navbar .links .about:hover{
+   scale: 1.1;
+}
+.animateFromRight {
+    position: absolute;
+    right: 20px;
+    bottom: 100px;
+    animation: animateFromRight 500ms ease-in-out;
+}
+
+@keyframes animateFromRight {
+    from {
+        right: -100%;
+        opacity: 0;
+    }
+
+    to {
+        right: 20px;
+        opacity: 1;
+    }
+}
+
+.animateToRight {
+    position: absolute;
+    right: -100%;
+    bottom: 100px;
+    animation: animateToRight 500ms ease-in-out;
+}
+
+@keyframes animateToRight {
+    from {
+        right: 20px;
+        opacity: 1;
+    }
+
+    to {
+        right: -100%;
+        opacity: 0;
+    }
+}
+
+.blinkiing {
+    background-color: transparent;
+    animation: animateBlinking 2s linear infinite;
+}
+
+@keyframes animateBlinking {
+    0% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(0, 0, 249, 0.317);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.margarine-regular {
+    font-family: "Margarine", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 30px;
+}
+
+.mukta-extralight {
+    font-family: "Mukta", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.videogroup{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+   /* background-color: #cbdbfd; */
+   scrollbar-width: thin;
+   scrollbar-color:  #022b85 #99b9ff;
+}
+.videoItem{
+    position: relative;
+    min-width: 150px;
+    max-width: 320px;
+    transition: all;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+.videoItem video{
+    object-fit: cover;
+    box-shadow: 0 0 10px rgb(0, 0, 125);
+}
+
+.unpinVideoItems{
+    height : 100%;
+}
+@media only screen and (max-width : 768px){
+    .unpinVideoItems{
+        height : 210px;
+    }
+}
+
+.animateDropUp{
+    animation-name: animateDropUp;
+    animation-duration: 200ms;
+    animation-timing-function: ease-in-out;
+    overflow: hidden;
+    height: auto;
+    opacity: 1;
+}
+@keyframes animateDropUp{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.animateDropDown{
+    animation-name: animateDropDown;
+    animation-duration: 200ms;
+    animation-timing-function: ease-in-out;
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+}
+@keyframes animateDropDown{
+    from{
+        height: auto;
+        opacity: 1;
+    }
+    to{
+        height: 0;
+        opacity: 0;
+    }
+}
+
+.animateModal{
+    position: fixed;
+    top: -100%;
+    animation-name: animateModal;
+    animation-timing-function: ease-in-out;
+}
+
+#controls .close:hover{
+    scale: 1.05;
+}
+#controls .video:hover{
+    scale: 1.05;
+}
+#controls .audio:hover{
+    scale: 1.05;
+}
+#controls .screenShare:hover{
+    scale: 1.05;
+}
+#controls .chatIcon:hover{
+    scale: 1.05;
+}
+
+.navbar .name{
+    font-size: 30px;
+    font-weight:600 ;
+    font-family :'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: linear-gradient(74deg, #0040ff, #0c008d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    transition: all 200ms ease;
+}
+.navbar .name:hover{
+    transform: translateX(5%);
+}

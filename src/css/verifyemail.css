@@ -1,0 +1,38 @@
+.verifyContainer{
+    width: 50%;
+    height: 90%;
+    box-shadow: 0 0 10px blue;
+    scrollbar-width: thin;
+    scrollbar-color: #0051ff #99b9ff;
+}
+
+@media only screen and (max-width : 800px){
+    .verifyContainer{
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width : 600px){
+    .verifyContainer{
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width : 450px){
+    .verifyContainer{
+        width: 90%;
+    }
+}
+
+.svgIcon .svg{
+    width: 30%;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
+}
+
+.svgIcon .svg.scaleup{
+    transform: scale(1.08);
+}
+.svgIcon .svg.scaledowmn{
+    transform: scale(1);
+}
