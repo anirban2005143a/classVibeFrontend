@@ -219,7 +219,7 @@ const videoGroup = () => {
 
     //function to handel full screen
     const handelFullscreen = (e) => {
-        const fullscreenDiv = e.currentTarget.parentElement.parentElement.querySelector('video')
+        const fullscreenDiv = e.currentTarget.parentElement.parentElement.parentElement.querySelector('video')
         if (document.fullscreenElement ||
             document.mozFullScreenElement ||
             document.webkitFullscreenElement ||
@@ -267,7 +267,7 @@ const videoGroup = () => {
 
                 screenShare.getVideoTracks()[0].addEventListener('ended', () => {
                     setisSharing(false)
-                    console.log("end")
+                    // console.log("end")
                     let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
                     getUserMedia({ video: true, audio: false }, (mediaStream) => {
                         localVideo.current.srcObject = mediaStream;
@@ -289,7 +289,7 @@ const videoGroup = () => {
     //function to handel pin video
     const pinVideo = (e, index) => {
         const videoItem = document.querySelectorAll('.videoItem')[index]
-        console.log(videoItem, index)
+        // console.log(videoItem, index)
         const videogroup = document.querySelector('.videogroup')
         if (e.currentTarget.querySelectorAll('svg')[1].classList.contains('d-none')) {
             Array.from(document.querySelectorAll('.videoItem')).forEach((item, i) => {
@@ -591,7 +591,7 @@ const videoGroup = () => {
         }
 
     }, [yourStream])
-    console.log(allChats)
+    // console.log(allChats)
 
     // all socket handels
     useEffect(() => {
@@ -602,6 +602,7 @@ const videoGroup = () => {
             socket.on("joined", data => {
                 setnewJoiner(data.peerId)
                 setownerId(data.ownerId)
+                console.log(data.peerId)
             })
 
             //handle chat messages
@@ -622,7 +623,7 @@ const videoGroup = () => {
 
             //handel disconnect
             socket.on('disconnected', (data) => {
-                console.log(data)
+                // console.log(data)
                 removeStream(data.peerId)
 
                 const obj = alreadyJoin
@@ -731,7 +732,7 @@ const videoGroup = () => {
 
                 <div className="chatbox bg-body-secondary d-none overflow-hidden rounded-3 z-3 d-flex flex-column " style={{ width: "40%", height: `${window.innerHeight * 0.7}px`, boxShadow: "0 0 20px #0000ff75" }}>
                     {allChats.map((chat) => {
-                        console.log(chat.userId, value.userId)
+                        // console.log(chat.userId, value.userId)
                         return <div key={uuidv4()} className={`allMessages rounded-3  d-flex ${chat.userId === value.userId ? 'justify-content-end' : ""}`}>
                             <div className={`singleChat p-2 m-2 rounded-3 ${chat.userId === value.userId ? 'bg-primary-subtle' : 'bg-body-tertiary'}`} style={{ width: "70%" }}>
                                 <div ref={senderName} className={`senderName fw-lighter ${chat.userId === value.userId ? 'text-end' : ''}`}>{chat.userId === value.userId ? 'you' : chat.userName}</div>
