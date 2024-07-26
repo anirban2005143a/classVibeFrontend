@@ -108,7 +108,7 @@ const videoGroup = () => {
                 const call = peerConn.current.call(`${peerId}`, yourStream, {
                     metadata: { user: user, peerId: yourId }
                 })
-                console.log(call)
+                console.log(peerId , call)
                 call.on('stream', stream => {
                     const arr = allStreams
                     arr.push(stream)
@@ -564,6 +564,7 @@ const videoGroup = () => {
     useEffect(() => {
         try {
             if (yourStream) {
+                console.log("stream")
                 peerConn.current.on('call', call => {
                     console.log('incomming call')
                     sendAdditionalInfo(call.metadata.peerId, { user: user, peerId: yourId })
