@@ -101,6 +101,7 @@ const videoGroup = () => {
 
     //function to call other
     const callOther = (peerId) => {
+        console.log("calling")
         try {
             if (peerId && peerId !== yourId) {
                 const call = peerConn.current.call(`${peerId}`, yourStream, {
@@ -562,6 +563,7 @@ const videoGroup = () => {
         try {
             if (yourStream) {
                 peerConn.current.on('call', call => {
+                    console.log('incomming call')
                     sendAdditionalInfo(call.metadata.peerId, { user: user, peerId: yourId })
                     const arr = otherUserDetails
                     arr.push(call.metadata)
@@ -570,6 +572,7 @@ const videoGroup = () => {
 
                     call.answer(yourStream)
                     call.on('stream', stream => {
+                        console.log('recieve call')
                         const obj = alreadyJoin
                         !obj[roomno] ? obj[roomno] = [] : ''
 
@@ -602,7 +605,7 @@ const videoGroup = () => {
             socket.on("joined", data => {
                 setnewJoiner(data.peerId)
                 setownerId(data.ownerId)
-                console.log(data.peerId)
+                // console.log(data.peerId)
             })
 
             //handle chat messages
@@ -643,7 +646,7 @@ const videoGroup = () => {
 
 
     }, [])
-    // console.log(alreadyJoin)
+    console.log(alreadyJoin)
     // to make peer call funcationable
     useEffect(() => {
         !alreadyJoin[roomno] ? alreadyJoin[roomno] = [] : ''
