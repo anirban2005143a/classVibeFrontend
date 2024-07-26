@@ -104,10 +104,11 @@ const videoGroup = () => {
         console.log("calling")
         try {
             if (peerId && peerId !== yourId) {
-                console.log(peerId ,yourId )
+                // console.log(peerId ,yourId )
                 const call = peerConn.current.call(`${peerId}`, yourStream, {
                     metadata: { user: user, peerId: yourId }
                 })
+                console.log(call)
                 call.on('stream', stream => {
                     const arr = allStreams
                     arr.push(stream)
