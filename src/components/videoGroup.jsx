@@ -34,6 +34,11 @@ const videoGroup = () => {
     const senderName = useRef()
     const senderMessage = useRef()
 
+    const [windowsize, setwindowsize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    })
+
     const [yourId, setyourId] = useState(null)//state to save peer id of currect user
     const [ownerId, setownerId] = useState(null)//state to save peer id of the owner of the room
     const [roomno, setroomno] = useState("")//state for room no
@@ -43,7 +48,7 @@ const videoGroup = () => {
     const [streamCount, setstreamCount] = useState(0)
     const [userDataCount, setuserDataCount] = useState(0)
     const [newJoiner, setnewJoiner] = useState(null)
-    const [isSharing, setisSharing] = useState(false)
+    const [isSharing, setisSharing] = useState(null)
     const [alreadyJoin, setalreadyJoin] = useState({})
 
     const [user, setuser] = useState({})
@@ -54,7 +59,7 @@ const videoGroup = () => {
     const [animateModal, setanimateModal] = useState(false)
 
     const [isAuthorized, setisAuthorized] = useState(null)
-    const [iserror, setiserror] = useState(false)
+    const [iserror, setiserror] = useState(null)
     const [errorMessage, seterrorMessage] = useState('')
     const [errorStatus, seterrorStatus] = useState(0)
 
@@ -100,15 +105,15 @@ const videoGroup = () => {
     }
 
     //function to call other
-    const callOther = (peerId) => {
+    const callOther = (peerId, stream) => {
         console.log("calling")
         try {
             if (peerId && peerId !== yourId) {
-                // console.log(peerId ,yourId )
-                const call = peerConn.current.call(`${peerId}`, yourStream, {
+                console.log(peerId, yourId)
+                const call = peerConn.current.call(`${peerId}`, stream, {
                     metadata: { user: user, peerId: yourId }
                 })
-                console.log(peerId , call)
+                // console.log(peerId, call)
                 call.on('stream', stream => {
                     const arr = allStreams
                     arr.push(stream)
@@ -258,7 +263,7 @@ const videoGroup = () => {
         e.preventDefault()
         let sharing = null
         isSharing ? sharing = true : sharing = false
-        setisSharing(!isSharing)
+        setisSharing(!sharing)
         if (!sharing) {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
                 setisOK(false)
@@ -267,14 +272,20 @@ const videoGroup = () => {
                 const screenShare = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false })
                 localVideo.current.srcObject = screenShare;
                 setyourStream(screenShare)
+                alreadyJoin[roomno].forEach((peerId) => {
+                    callOther(peerId, screenShare)
+                })
 
                 screenShare.getVideoTracks()[0].addEventListener('ended', () => {
                     setisSharing(false)
-                    // console.log("end")
+                    sharing = false
                     let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
                     getUserMedia({ video: true, audio: false }, (mediaStream) => {
                         localVideo.current.srcObject = mediaStream;
                         setyourStream(mediaStream)
+                        alreadyJoin[roomno].forEach((peerId) => {
+                            callOther(peerId, mediaStream)
+                        })
                     })
                 })
             }
@@ -285,6 +296,9 @@ const videoGroup = () => {
             getUserMedia({ video: true, audio: false }, (mediaStream) => {
                 localVideo.current.srcObject = mediaStream;
                 setyourStream(mediaStream)
+                alreadyJoin[roomno].forEach((peerId) => {
+                    callOther(peerId, mediaStream)
+                })
             })
         }
     }
@@ -310,26 +324,27 @@ const videoGroup = () => {
         }
 
         if (e.currentTarget.querySelectorAll('svg')[0].classList.contains('d-none')) {
-
+            //when video is pinned
             videoItem.addEventListener('mouseover', (e) => { e.currentTarget.style.scale = 1 })
             videoItem.setAttribute("pined", "true")
             document.querySelector('.videogroup').classList.remove("overflow-auto")
             document.querySelector('.videogroup').classList.add("overflow-hidden")
+            document.querySelector('.videogroup').classList.remove("w-100")
+            document.querySelector('.videogroup').classList.add("w-75")
             document.querySelector('.sidepannel').parentElement.classList.remove('d-none')
             Array.from(document.querySelectorAll('.videoItem')).forEach((Item, i) => {
                 if (index === i) {
                     !videogroup.contains(Item) ? videogroup.appendChild(Item) : ''
-                    Item.style.margin = '0'
-                    Item.classList.add('w-100')
-                    Item.classList.add('h-100')
-                    Item.querySelector('video').classList.add('h-100')
-                    Item.style.maxWidth = 'none'
+                    Item.style.margin = '10px'
+                    Item.style.width = `${document.querySelector('.videoAndChat').clientWidth * 0.9}px`
+                    Item.style.height = `${document.querySelector('.videoAndChat').clientWidth * 0.9 * 0.5}px`
+                    // Item.querySelector('video').classList.add('h-100')
+                    // Item.style.maxWidth = 'none'
                 } else {
-                    Item.style.margin = '15px'
-                    Item.classList.remove('w-100')
-                    Item.classList.remove('h-100')
-                    Item.querySelector('video').classList.remove('h-100')
-                    Item.style.maxWidth = '320px'
+                    // Item.style.margin = '10px'
+                    // Item.querySelector('video').classList.remove('h-100')
+                    Item.style.width = `${document.querySelector('.videoAndChat').clientWidth * 0.25 - 30}px`
+                    Item.style.height = `${(document.querySelector('.videoAndChat').clientWidth * 0.25 - 30) * 0.75}px`
                     document.querySelector('.sidepannel').appendChild(Item)
                 }
             })
@@ -338,18 +353,13 @@ const videoGroup = () => {
             videoItem.setAttribute("pined", "false")
             document.querySelector('.videogroup').classList.add("overflow-auto")
             document.querySelector('.videogroup').classList.remove("overflow-hidden")
+            document.querySelector('.videogroup').classList.add("w-100")
+            document.querySelector('.videogroup').classList.remove("w-75")
             document.querySelector('.sidepannel').parentElement.classList.add('d-none')
-            Array.from(document.querySelectorAll('.videoItem')).forEach((Item, i) => {
-                if (index !== i) {
-                    videogroup.appendChild(Item)
-                } else {
-                    Item.style.margin = '15px'
-                    Item.classList.remove('w-100')
-                    Item.classList.remove('h-100')
-                    Item.querySelector('video').classList.remove('h-100')
-                    Item.style.maxWidth = '320px'
-                }
+            Array.from(document.querySelectorAll('.videoItem')).forEach((Item, i, array) => {
+                index !== i ? videogroup.appendChild(Item) : ''
             })
+            resizeVideoItem()
         }
     }
 
@@ -492,34 +502,50 @@ const videoGroup = () => {
             const parentElemWidth = document.querySelector('.videogroup').clientWidth
             const videoItemArr = Array.from(document.querySelectorAll('.videoItem'))
             const videoItemLen = videoItemArr.length
+            videoItemLen === 1 ?
+                videoItemArr[0].querySelector('.otherVideoControl .controls').classList.add('d-none') :
+                videoItemArr[0].querySelector('.otherVideoControl .controls').classList.remove('d-none')
             if (parentElemWidth >= 750) {
-                videoItemLen === 1 ? videoItemArr.forEach((item) => {
-                    item.querySelector('video').classList.add('h-100')
-                    item.style.maxWidth = `${parentElemWidth * 1.0 - 50}px`
-                }) : ""
-                videoItemLen === 2 ? videoItemArr.forEach((item) => {
-                    item.querySelector('video').classList.remove('h-100')
-                    item.style.maxWidth = `${parentElemWidth * 0.5 - 50}px`
-                }) : ""
-                videoItemLen === 3 ? videoItemArr.forEach((item) => {
-                    item.style.maxWidth = `${parentElemWidth * 0.333 - 50}px`
-                }) : ""
-                videoItemLen > 3 ? videoItemArr.forEach((item) => {
-                    item.style.maxWidth = '320px'
-                }) : ""
+                videoItemLen <= 3 ? videoItemArr.forEach((item) => {
+                    item.style.width = `${(parentElemWidth / videoItemLen) - 50}px`
+                    videoItemLen === 1 ?
+                        item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.5}px` :
+                        item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.75}px`
+                }) : ''
 
             } else {
-                if (videoItemLen !== 1) {
-                    //resize item when window is resize
-                    parentElemWidth > 650 && parentElemWidth < 850 ? videoItemArr.forEach((item) => {
-                        item.style.maxWidth = `320px`
-                    }) : ''
-                }
+                videoItemLen <= 3 ? videoItemArr.forEach((item) => {
+                    item.style.width = `${(parentElemWidth / videoItemLen) - 50}px`
+                    item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.75}px`
+                }) : ''
             }
         }
     }
 
-    window.addEventListener('resize', resizeVideoItem)
+
+    const changeStream = (peerId, stream) => {
+        console.log(stream)
+        const videoItemArr = Array.from(document.querySelectorAll('.videoItem'))
+        videoItemArr.forEach((item) => {
+            item.getAttribute('peerId') === peerId ? item.querySelector('video').srcObject = stream : ''
+        })
+    }
+
+    const sendScreenToCaller = (stream) => {
+        try {
+            alreadyJoin[roomno].forEach((peerId) => {
+                const conn = peerConn.current.connect(peerId)
+                conn.on('open', () => {
+                    // Send user data when the connection is established
+                    conn.send({ user: user, peerId: yourId, stream: stream });
+                });
+            })
+        } catch (error) {
+            setiserror(true)
+            seterrorMessage("Internal Error Occured ... Please try again")
+            seterrorStatus(500)
+        }
+    }
 
     //peer js after loading the page
     useEffect(() => {
@@ -533,18 +559,24 @@ const videoGroup = () => {
 
                 peer.on('connection', (conn) => {
                     conn.on('data', (data) => {
-                        const obj = alreadyJoin
-                        !obj[roomno] ? obj[roomno] = [] : ''
 
+                        data.stream ?
+                            Array.from(document.querySelectorAll('.videoItem')).forEach((item) => {
+                                item.getAttribute('peerId') === data.peerId ? item.querySelector('video').srcObject = data.stream : ''
+                            }) :
+                            (() => {
+                                const obj = alreadyJoin
+                                !obj[roomno] ? obj[roomno] = [] : ''
 
-                        if (!obj[roomno].includes(data.peerId)) {
-                            const arr = otherUserDetails
-                            arr.push(data)
-                            setotherUserDetails(arr)
-                            setuserDataCount(arr.length)
-                            !obj[roomno].includes(data.peerId) ? obj[roomno].push(data.peerId) : ''
-                            setalreadyJoin(obj)
-                        }
+                                if (!obj[roomno].includes(data.peerId)) {
+                                    const arr = otherUserDetails
+                                    arr.push(data)
+                                    setotherUserDetails(arr)
+                                    setuserDataCount(arr.length)
+                                    !obj[roomno].includes(data.peerId) ? obj[roomno].push(data.peerId) : ''
+                                    setalreadyJoin(obj)
+                                }
+                            })()
                     });
                 });
             }
@@ -559,35 +591,45 @@ const videoGroup = () => {
 
     // console.log(allStreams)
     // console.log(otherUserDetails)
-
+    console.log(alreadyJoin)
 
     useEffect(() => {
         try {
             if (yourStream) {
                 console.log("stream")
                 peerConn.current.on('call', call => {
-                    console.log('incomming call')
-                    sendAdditionalInfo(call.metadata.peerId, { user: user, peerId: yourId })
-                    const arr = otherUserDetails
-                    arr.push(call.metadata)
-                    setotherUserDetails(arr)
-                    setuserDataCount(arr.length)
-
+                    // !alreadyJoin[roomno].includes(call.metadata.peerId) ?
+                    //     call.answer(yourStream) : ''
                     call.answer(yourStream)
                     call.on('stream', stream => {
-                        console.log('recieve call')
-                        const obj = alreadyJoin
-                        !obj[roomno] ? obj[roomno] = [] : ''
+                        !alreadyJoin[roomno].includes(call.metadata.peerId) ?
+                            (() => {
+                                console.log('recieve call')
+                                const obj = alreadyJoin
+                                !obj[roomno] ? obj[roomno] = [] : ''
+                                obj[roomno].push(call.metadata.peerId)
+                                setalreadyJoin(obj)
 
-                        if (!obj[roomno].includes(call.metadata.peerId)) {
-                            const arr = allStreams
-                            arr.push(stream)
-                            setallStreams(arr)
-                            setstreamCount(arr.length)
-                            obj[roomno].push(call.metadata.peerId)
-                            setalreadyJoin(obj)
-                        }
+                                const arr = allStreams
+                                arr.push(stream)
+                                setallStreams(arr)
+                                setstreamCount(arr.length)
+                            })() : (() => {
+                                changeStream(call.metadata.peerId, stream)
+                            })()
                     })
+                    !alreadyJoin[roomno].includes(call.metadata.peerId) ?
+                        (() => {
+                            sendAdditionalInfo(call.metadata.peerId, { user: user, peerId: yourId })
+                            const arr = otherUserDetails
+                            arr.push(call.metadata)
+                            setotherUserDetails(arr)
+                            setuserDataCount(arr.length)
+                        })() : ''
+
+
+
+
                 })
             }
         } catch (error) {
@@ -652,9 +694,18 @@ const videoGroup = () => {
     console.log(alreadyJoin)
     // to make peer call funcationable
     useEffect(() => {
-        !alreadyJoin[roomno] ? alreadyJoin[roomno] = [] : ''
-        !alreadyJoin[roomno].includes(newJoiner) ? callOther(newJoiner) : ''
-    }, [newJoiner])
+        newJoiner && yourStream ? (() => {
+            !alreadyJoin[roomno] ? alreadyJoin[roomno] = [] : ''
+            !alreadyJoin[roomno].includes(newJoiner) &&
+                !yourStream.getVideoTracks()[0].getSettings().displaySurface ? callOther(newJoiner, yourStream) : ''
+        })() : ''
+    }, [newJoiner, yourStream, isSharing])
+
+
+    useEffect(() => {
+        sendScreenToCaller(yourStream)
+    }, [yourStream])
+
 
     //set room no
     useEffect(() => {
@@ -680,6 +731,13 @@ const videoGroup = () => {
         localVideo.current ? resizeVideoItem() : ''
     }, [localVideo.current])
 
+
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('.videoItem') ? (() => {
+            windowsize.height === window.innerHeight ? resizeVideoItem() : ''
+        })() : ''
+
+    })
 
     //when window is resize
     window.addEventListener('resize', () => {
@@ -726,11 +784,11 @@ const videoGroup = () => {
     return (
         <>  <Leave disconnectClient={disconnectClient} />
 
-            {(user == {} || !yourId || !ownerId) && !iserror && isAuthorized === null && <Loader />}
+            {(user == {} || !yourId || !ownerId) && iserror === null && isAuthorized === null && <Loader />}
 
-            {iserror && <Error status={errorStatus} message={errorMessage} />}
+            {iserror === true && iserror !== null && <Error status={errorStatus} message={errorMessage} />}
 
-            {user.firstName && user.lastName && yourId && ownerId && !iserror && isAuthorized !== null && <div className=' w-100 position-absolute overflow-x-hidden'>
+            {user.firstName && user.lastName && yourId && ownerId && !iserror && isAuthorized !== null && !iserror && <div className=' w-100 position-absolute overflow-x-hidden'>
 
                 <div className="roomId mx-3 mt-2 d-flex align-items-center" >
                     <span className="margarine-regular mx-2">Room Id </span> <span className=" fw-bold fs-3">: </span><span className=" mx-2 fw-semibold fs-3">{roomno}</span>
@@ -767,11 +825,11 @@ const videoGroup = () => {
                     </form>
                 </div>
 
-                <div className="mainsection ">
-                    <div className="videoAndChat rounded-4 m-3 h-100 position-relative overflow-x-hidden overflow-y-auto d-flex align-items-md-start flex-md-row flex-column" style={{ backgroundColor: "#cbdbfd", scrollbarWidth: "thin" }} >
+                <div className="mainsection " >
+                    <div className="videoAndChat rounded-4 m-3 h-100 position-relative overflow-x-hidden overflow-y-auto d-flex align-items-md-start flex-md-row flex-column" style={{ backgroundColor: "#cbdbfd", scrollbarWidth: "thin", height: `${window.innerHeight}px` }} >
 
                         <div className="videogroup h-100 w-100 p-2 overflow-auto rounded-4 position-relative " >
-                            <div className="videoItem rounded-3 my-2 mx-2" pined="false" onMouseOver={(e) => { e.preventDefault(); getOverlayer(e.currentTarget) }} onMouseLeave={(e) => { e.preventDefault(); removeOverlayer(e.currentTarget) }} style={{ margin: "15px" }}>
+                            <div className="videoItem rounded-3 my-2 mx-2" pined="false" onMouseOver={(e) => { e.preventDefault(); getOverlayer(e.currentTarget) }} onMouseLeave={(e) => { e.preventDefault(); removeOverlayer(e.currentTarget) }} >
 
                                 <div className="name position-absolute top-0 start-0 fw-semibold fs-5 z-2 rounded-3 px-2 py-1 text-white" style={{ backgroundColor: "#0606066b" }}>
                                     {`${user.firstName} ${user.lastName}`}
@@ -812,7 +870,7 @@ const videoGroup = () => {
                                     </div>
                                 </div>
 
-                                <video ref={localVideo} autoPlay muted className="localVideo overflow-hidden rounded-3 w-100" ></video>
+                                <video ref={localVideo} autoPlay muted className="localVideo overflow-hidden rounded-3" ></video>
 
                             </div>
                         </div>
@@ -860,7 +918,7 @@ const videoGroup = () => {
                             </svg>
                         </div>
                     </div>
-                    {/* <Canvas/> */}
+
                 </div>
             </div>}
         </>
