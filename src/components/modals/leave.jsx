@@ -5,10 +5,10 @@ const leave = (props) => {
     <div className="modal fade" id="exampleModalLeave" tabIndex="-1" aria-labelledby="exampleModalLeaveLabel" aria-hidden="true">
   <div className="modal-dialog ">
     <div className="modal-content bg-danger-subtle">
-      <div className="modal-header">
+      <div className="modal-header py-2 px-3">
         <h1 className="modal-title fs-5 fw-bold" id="exampleModalLeaveLabel">Want to continue ?</h1>
       </div>
-      <div className="modal-body">
+      <div className="modal-body py-2 px-3">
         You will be removed by this meeting.
       </div>
       <div className="modal-footer">

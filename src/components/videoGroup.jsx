@@ -39,6 +39,7 @@ const videoGroup = () => {
         height: window.innerHeight
     })
 
+
     const [yourId, setyourId] = useState(null)//state to save peer id of currect user
     const [ownerId, setownerId] = useState(null)//state to save peer id of the owner of the room
     const [roomno, setroomno] = useState("")//state for room no
@@ -50,6 +51,7 @@ const videoGroup = () => {
     const [newJoiner, setnewJoiner] = useState(null)
     const [isSharing, setisSharing] = useState(null)
     const [alreadyJoin, setalreadyJoin] = useState({})
+    const [removedPeer, setremovedPeer] = useState({})
 
     const [user, setuser] = useState({})
     const [allChats, setallChats] = useState([])
@@ -67,6 +69,7 @@ const videoGroup = () => {
     const generateId = () => {
         const roomId = atob(id)
         setroomno(roomId)
+        return roomId
     }
 
     //function to check token and userid same or not
@@ -106,10 +109,10 @@ const videoGroup = () => {
 
     //function to call other
     const callOther = (peerId, stream) => {
-        console.log("calling")
+        // console.log("calling")
         try {
             if (peerId && peerId !== yourId) {
-                console.log(peerId, yourId)
+                // console.log(peerId, yourId)
                 const call = peerConn.current.call(`${peerId}`, stream, {
                     metadata: { user: user, peerId: yourId }
                 })
@@ -117,6 +120,7 @@ const videoGroup = () => {
                 call.on('stream', stream => {
                     const arr = allStreams
                     arr.push(stream)
+                    // console.log(stream)
                     setallStreams(arr)
                     setstreamCount(arr.length)
                 })
@@ -165,14 +169,12 @@ const videoGroup = () => {
 
     //function to get overlayer to the video
     const getOverlayer = (elem) => {
-        elem.getAttribute("pined") === "false" ? elem.style.scale = 1.015 : ''
         elem.querySelector('.otherVideoControl') ? elem.querySelector('.otherVideoControl').classList.remove('d-none') : ""
 
     }
 
     //function to remove overlayer
     const removeOverlayer = (elem) => {
-        elem.getAttribute("pined") === "false" ? elem.style.scale = 1 : ''
         let timer = null
         timer = setTimeout(() => {
             elem.querySelector('.otherVideoControl') ? elem.querySelector('.otherVideoControl').classList.add('d-none') : ""
@@ -303,66 +305,6 @@ const videoGroup = () => {
         }
     }
 
-    //function to handel pin video
-    const pinVideo = (e, index) => {
-        const videoItem = document.querySelectorAll('.videoItem')[index]
-        // console.log(videoItem, index)
-        const videogroup = document.querySelector('.videogroup')
-        if (e.currentTarget.querySelectorAll('svg')[1].classList.contains('d-none')) {
-            Array.from(document.querySelectorAll('.videoItem')).forEach((item, i) => {
-                if (i !== index) {
-                    item.querySelector('.pinVideo').querySelectorAll('svg')[1].classList.add('d-none')
-                    item.querySelector('.pinVideo').querySelectorAll('svg')[0].classList.remove('d-none')
-                } else {
-                    e.currentTarget.querySelectorAll('svg')[1].classList.remove('d-none')
-                    e.currentTarget.querySelectorAll('svg')[0].classList.add('d-none')
-                }
-            })
-        } else {
-            e.currentTarget.querySelectorAll('svg')[1].classList.add('d-none')
-            e.currentTarget.querySelectorAll('svg')[0].classList.remove('d-none')
-        }
-
-        if (e.currentTarget.querySelectorAll('svg')[0].classList.contains('d-none')) {
-            //when video is pinned
-            videoItem.addEventListener('mouseover', (e) => { e.currentTarget.style.scale = 1 })
-            videoItem.setAttribute("pined", "true")
-            document.querySelector('.videogroup').classList.remove("overflow-auto")
-            document.querySelector('.videogroup').classList.add("overflow-hidden")
-            document.querySelector('.videogroup').classList.remove("w-100")
-            document.querySelector('.videogroup').classList.add("w-75")
-            document.querySelector('.sidepannel').parentElement.classList.remove('d-none')
-            Array.from(document.querySelectorAll('.videoItem')).forEach((Item, i) => {
-                if (index === i) {
-                    !videogroup.contains(Item) ? videogroup.appendChild(Item) : ''
-                    Item.style.margin = '10px'
-                    Item.style.width = `${document.querySelector('.videoAndChat').clientWidth * 0.9}px`
-                    Item.style.height = `${document.querySelector('.videoAndChat').clientWidth * 0.9 * 0.5}px`
-                    // Item.querySelector('video').classList.add('h-100')
-                    // Item.style.maxWidth = 'none'
-                } else {
-                    // Item.style.margin = '10px'
-                    // Item.querySelector('video').classList.remove('h-100')
-                    Item.style.width = `${document.querySelector('.videoAndChat').clientWidth * 0.25 - 30}px`
-                    Item.style.height = `${(document.querySelector('.videoAndChat').clientWidth * 0.25 - 30) * 0.75}px`
-                    document.querySelector('.sidepannel').appendChild(Item)
-                }
-            })
-        } else {
-            videoItem.addEventListener('mouseover', (e) => { e.currentTarget.style.scale = 1.015 })
-            videoItem.setAttribute("pined", "false")
-            document.querySelector('.videogroup').classList.add("overflow-auto")
-            document.querySelector('.videogroup').classList.remove("overflow-hidden")
-            document.querySelector('.videogroup').classList.add("w-100")
-            document.querySelector('.videogroup').classList.remove("w-75")
-            document.querySelector('.sidepannel').parentElement.classList.add('d-none')
-            Array.from(document.querySelectorAll('.videoItem')).forEach((Item, i, array) => {
-                index !== i ? videogroup.appendChild(Item) : ''
-            })
-            resizeVideoItem()
-        }
-    }
-
     //function to create video item and append
     const createVideoItem = (stream, index) => {
 
@@ -373,39 +315,19 @@ const videoGroup = () => {
             videoItem.classList.add('videoItem')
             videoItem.classList.add('rounded-3')
             videoItem.setAttribute("pined", "false")
-            videoItem.style.margin = '15px'
             videoItem.setAttribute('peerId', otherUserDetails[index].peerId)
             videoItem.innerHTML = `
-             <div class='otherVideoControl rounded-3 w-100 my-auto position-absolute h-100 d-none z-2 d-flex justify-content-center align-items-center'>
+                <div class='otherVideoControl rounded-3 w-100 my-auto position-absolute h-100 d-none z-2 d-flex justify-content-center align-items-center'>
                     <div class="controls rounded-4 d-flex justify-content-center align-items-center px-3 py-1" style="background-color: rgb(0 0 0 /70%);">
-                        <div class="fullscreen mx-3 my-1" style="cursor: pointer;"><i class="fa-solid fa-expand fs-3 fw-bold" style="color: white;" ></i></div>
-                        <div class="pinVideo mx-3 my-1" style="cursor: pointer;" >
-                            <svg style="width: 30px;"  version="1.1" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
-                                <path transform="translate(1392)" d="m0 0h44l1 4 2 1v2l4 2 11 9 10 9 4 3v2l4 2 336 336 5 6 7 6 6 7 6 5 5 6 7 6 5 6 7 6 5 6 7 6 6 7 6 5 5 6 7 6 4 4v2l4 2 6 7 6 5 5 6 7 6 5 6 7 6 6 7 6 5 6 7 6 5 6 7 6 5 4 4v2l4 2 5 6 8 7 5 5v2h2l7 8 13 13 10 14 8 17 1 4v11l-4 14-9 14-12 11-19 14-20 13-14 7-17 5-28 5-18 5h-21l-10-3h-11l-7 1-12-5-28-10-10-5-9 10-8 11-9 11-8 10-13 15-9 10-7 8-12 14-11 14-9 11-15 16-9 11-6 8h-2l-2 4-12 14-9 10-7 8-12 14-9 11-10 13-8 8-8 10h-2l-2 4-22 26-7 8-9 10-7 8-12 14-11 14-9 11-13 14-9 11-9 10-9 11-11 12-9 11-11 12-9 11-10 11-7 8-14 17-11 13-12 14-9 11-10 11-7 8-12 14-11 12-8 10h-2l-2 4-10 12-7 8-11 11h-2l4 10 10 14 10 15 9 16 7 16 9 25 6 19 4 17 2 15v13l1 5v16l-5 37-5 23-5 16-11 25-9 16-10 14-11 14-8 10-9 10-11 9-17 9-8 3h-9l-13-4-13-7-17-14-12-12-6-5-7-8-279-279-8-5-4-1-8 6-10 9-20 20-5 6-4 4h-2l-2 4-16 16h-2l-2 4-14 13-2 3h-2l-2 4-8 7-8 9-8 7-4 5-8 7-221 221-8 7-13 13-8 7-13 12-9 9-8 7-9 9-8 7-14 13-8 7-15 13-14 12-8 7-16 15-14 12-11 10-11 9-14 12-8 7-30 26-14 12-8 7-15 14-14 11-13 11-13 10-18 14-13 11-10 8-9 8-28 22-10 9-11 8-15 10-23 12v3h-37l3-3-1-4-9-9-8-7-8-12-4-14v-8l6-15 6-12 9-14 10-13 11-13 7-9 10-13 2-3h2l2-4 10-13 11-14 11-13 13-16 7-8 10-13 10-11 9-11 12-14 12-13 8-10 13-14 1-2h2l2-4 12-13 7-8 9-10 14-17 9-10 18-22h2l2-4 11-12 13-15 7-7 7-8 11-12 1-2h2v-2l8-7 9-10 10-10 7-8 15-16 7-8 9-10 16-17 14-14 1-2h2l2-4h2l2-4 4-4h2l2-4 4-4h2l2-4 84-84h2l2-4 4-4h2l2-4 4-4h2l2-4 4-4h2l2-4h2l2-4h2l2-4 4-4h2l2-4h2l2-4h2l2-4 98-98 6-7h2l1-3 8-7 17-17h2v-2l8-7h2l2-4 4-4h2v-2h2l-1-5-5-5v-2l-4-2-12-12v-2l-4-2-32-32v-2l-4-2-4-4v-2h-2l-7-8-227-227-6-5-6-7-6-5-7-8-8-8-11-14-8-14-2-5v-17l5-13 9-14 15-16 17-13 14-10 15-10 23-12 21-8 16-5 23-4 25-2h18l29 3 30 5 27 9 29 13 19 12 14 10 11 11 4-2 8-7 12-11 8-7 8-8 8-7 9-8 17-13 13-11 10-8 10-9 13-11 8-7 14-12 6-6h2v-2l11-9 11-10 14-11 13-11 10-8 10-9 14-12 11-10 8-7 10-9 11-9 10-9 22-18 9-8 11-9 11-10 11-9 10-9 8-7 14-12 10-9 11-9 17-14 10-9 11-9 10-9 11-9 10-9 8-7 14-12 10-9 11-9 11-10 8-7 13-11 14-11 11-9 10-9 11-9 7-7-1-7-10-22-5-16-4-19-1-8v-24l5-25 6-29 5-12 9-16 9-14 8-12 9-11 11-12 9-8z" fill="#fff" />
-                                <path transform="translate(2047,623)" d="m0 0h1v6l-3-1z" fill="#fff" />
-                                <path transform="translate(1290,1288)" d="m0 0 5 1v2l-4-1z" fill="#fff" />
-                                <path transform="translate(0,2046)" d="m0 0 4 1-4 1z" />
-                                <path transform="translate(1296,1287)" d="m0 0 2 1-2 1z" fill="#aaa" />
-                                <path transform="translate(1439)" d="m0 0 3 1z" fill="#fff" />
-                                <path transform="translate(75,2047)" d="m0 0 2 1z" fill="#fff" />
-                                <path transform="translate(1437)" d="m0 0" fill="#fff" />
-                            </svg>
-                            <svg class=" d-none" style="width: 30px;" version="1.1" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
-                                <path transform="translate(1361,60)" d="m0 0h49l23 2 23 4 24 6 21 7 21 9 22 11 19 12 16 11 13 10 13 11 8 8 8 7 227 227 7 8 21 21 7 8 12 14 10 14 10 15 12 21 10 21 10 26 7 23 5 22 4 33 1 17v13l-2 27-3 23-6 28-7 24-10 25-13 27-11 19-9 14-8 10-9 10-2 3h-2l-2 4-22 22-8 7-10 8-15 11-27 18-16 10-17 11-24 15-27 18-28 17-25 16-20 13-69 44-13 8-24 15-30 20-22 14-17 11-23 15-22 14-16 9-9 6-7 6-4 1-13-12-17-17-7-8-344-344-6-5-7-8-6-5v-2l-3-1-6-7-3-2v-2l-3-1-7-8-3-2v-2l-3-1-6-7-3-2v-2l-3-1-6-7-3-2v-2l-3-1v-2h-2l-4-4v-2l-4-2-7-8-2-1v-2l-4-2-5-6-8-7-56-56-2-3 1-5 5-5 7-10 10-16 18-27 13-23 20-30 12-19 10-16 16-25 16-24 13-22 18-27 7-11 11-17 8-13 11-18 16-24 10-16 13-19 12-20 7-11 13-20 10-16 12-17 11-14 10-11 1-2h2l2-4 8-8 8-7 15-13 18-13 22-14 18-10 15-7 26-10 31-8 22-4z" fill="#FEFEFE" />
-                                <path transform="translate(127,85)" d="m0 0 6 1 6 5v2l4 2 11 12 4 3v2l4 2 776 776v2l4 2 8 8v2l4 2 9 9v2l4 2 8 8v2l4 2 8 8v2l4 2 18 18v2l3 1 3 3v2l4 2 6 7 2 1v2l4 2 3 3v2h2l4 5 6 5 6 7 6 5 6 7 7 6v2h2l10 10v2l3 1 3 3v2l4 2 6 7 8 7 4 5 8 7 4 4v2l4 2 21 21v2l4 2 8 8v2l4 2 33 33v2l4 2 21 21v2l4 2 11 11v2l4 2 9 10 5 4 7 8 6 5 7 8 5 4 7 8 5 4 7 8 3 2v2l3 1 7 8 2 1v2l3 1 4 5 2 1v2l4 2 3 3v2h2l4 4v2l4 2 5 5v2l4 2 582 582 5 4 3 4-1 5-10 10-8 7-9 10-31 31-4 5-4 3-5-2-8-8-7-8-142-142-6-5v-2h-2l-7-8-210-210-3-2v-2l-3-1v-2l-3-1v-2l-4-2-18-18v-2l-3-1v-2l-4-2-2-4-3-1-4-5-89-89-8-7-19-19-7-8-10-9-3-1-1 11-10 37-8 25-8 22-10 23-10 21-14 24-12 21-13 21-11 15-13 16-10 13-13 15-14 16-8 7-5 6-8 7-9 10-7 8-5 1-8-7-6-7-8-7-26-26-7-8-10-10-8-7-59-59-7-8-11-11-8-7-26-26-7-8-32-32-8-7-55-55-7-8-15-14-23-23-13-12-16-16-7-6-6 1-10 9-23 23-7 8-8 7-86 86-5 6-6 5-7 8-5 4-7 8-5 4-7 8-6 5-5 6-8 7-19 19-12 13-13 13h-2l-2 4-20 20-8 7-5 5-11 12-6 5-7 8-40 40h-2l-2 4-9 8-7 8-6 5-7 8-6 5-7 8-5 4-7 8-6 5-7 8-5 4-5 6h-2v2l-8 7-12 12-5 6-62 62-8 7-7 7-10 7-19 8-28 12-25 10-13 6-24 10-4 2-3-1 8-13 21-49 11-26 6-13 4-11 6-10 12-13 5-5h2v-2l8-7 12-13 14-14 7-8 4-2 2-4 8-8h2l2-4 95-95h2l2-4 141-141 7-6 7-8 3-1 2-4 30-30 7-6 7-8 63-63h2l2-4 17-17 8-7 15-15 7-8 20-20h2v-2h2l2-4 9-7 1-2-4-2-11-9-25-25-7-8-23-23-7-8-31-31-8-7-51-51-7-8-7-7-8-7-64-64-7-8-8-8-8-7-21-21-7-8-26-26-8-7-30-30-1-3 3-6 12-11 7-7 8-7 18-18 8-7 12-11 26-20 18-13 14-10 19-12 24-13 16-9 23-11 26-10 33-11 29-8 15-4 7-1-7-9-31-31v-2l-4-2-11-12-5-5-16-15-10-10v-2h-2l-7-8-330-330-8-7-44-44-7-8-34-34-8-7-13-13-7-8-13-13-6-8-1-3 16-15 7-7 8-7z" fill="#FEFEFE" />
-                            </svg>
+                        <div class="fullscreen mx-3 my-1" style="cursor: pointer;">
+                            <i class="fa-solid fa-expand fs-3 fw-bold" style="color: white;" ></i>
                         </div>
-                        
                     </div>
                 </div>
             `
             videoItem.addEventListener('mouseleave', (e) => { e.preventDefault(); removeOverlayer(e.currentTarget) })
             videoItem.addEventListener('mouseover', (e) => { e.preventDefault(); getOverlayer(e.currentTarget) })
             videoItem.querySelector(".fullscreen").addEventListener('click', handelFullscreen)
-            videoItem.querySelector('.pinVideo').addEventListener('click', (e) => {
-                const index = Array.from(document.querySelectorAll('.videoItem')).indexOf(videoItem)
-                pinVideo(e, index)
-            })
 
             const name = document.createElement('div')
             name.classList.add('name')
@@ -482,6 +404,7 @@ const videoGroup = () => {
     const disconnectClient = async () => {
         try {
             socketConn.current.emit('disconnected', { peerId: yourId, roomno: roomno })
+            window.close()
         } catch (error) {
             setiserror(true)
             seterrorMessage("Internal Error Occured ... Please try again")
@@ -491,11 +414,22 @@ const videoGroup = () => {
 
     //function to remove disconnected stream
     const removeStream = (peerId) => {
+        console.log('remove')
         const videoGroup = document.querySelector('.videogroup')
         Array.from(document.querySelectorAll('.videoItem')).forEach((item) => {
+            console.log(item.getAttribute('peerId') === peerId)
             item.getAttribute('peerId') === peerId ? videoGroup.removeChild(item) : ''
         })
+        const roomId = generateId()
+        const obj = alreadyJoin
+        const index = alreadyJoin[roomId].indexOf(peerId)
+        obj[roomId].splice(index, 1)
+        setalreadyJoin(obj)
     }
+
+    console.log(alreadyJoin)
+    console.log(removedPeer)
+    console.log(otherUserDetails)
 
     const resizeVideoItem = () => {
         if (document.querySelector('.videogroup')) {
@@ -506,25 +440,36 @@ const videoGroup = () => {
                 videoItemArr[0].querySelector('.otherVideoControl .controls').classList.add('d-none') :
                 videoItemArr[0].querySelector('.otherVideoControl .controls').classList.remove('d-none')
             if (parentElemWidth >= 750) {
-                videoItemLen <= 3 ? videoItemArr.forEach((item) => {
-                    item.style.width = `${(parentElemWidth / videoItemLen) - 50}px`
-                    videoItemLen === 1 ?
-                        item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.5}px` :
-                        item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.75}px`
-                }) : ''
+                // console.log("more")
+                videoItemLen <= 3 ?
+                    videoItemArr.forEach((item) => {
+                        item.style.width = `${(parentElemWidth / videoItemLen) - 50}px`
+                        videoItemLen === 1 ?
+                            item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.5}px` :
+                            item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.75}px`
+                    }) :
+                    videoItemArr.forEach((item) => {
+                        item.style.width = `${(parentElemWidth / 3) - 50}px`
+                        item.style.height = `${((parentElemWidth / 3) - 50) * 0.75}px`
+                    })
 
             } else {
-                videoItemLen <= 3 ? videoItemArr.forEach((item) => {
-                    item.style.width = `${(parentElemWidth / videoItemLen) - 50}px`
-                    item.style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.75}px`
-                }) : ''
+                // console.log('less')
+                videoItemLen === 1 ?
+                    (() => {
+                        videoItemArr[0].style.width = `${(parentElemWidth / videoItemLen) - 50}px`
+                        videoItemArr[0].style.height = `${((parentElemWidth / videoItemLen) - 50) * 0.65}px`
+                    })() :
+                    videoItemArr.forEach((item) => {
+                        item.style.width = `320px`
+                        item.style.height = `${320 * 0.75}px`
+                    })
             }
         }
     }
 
-
     const changeStream = (peerId, stream) => {
-        console.log(stream)
+        // console.log(stream)
         const videoItemArr = Array.from(document.querySelectorAll('.videoItem'))
         videoItemArr.forEach((item) => {
             item.getAttribute('peerId') === peerId ? item.querySelector('video').srcObject = stream : ''
@@ -547,7 +492,6 @@ const videoGroup = () => {
         }
     }
 
-    //peer js after loading the page
     useEffect(() => {
         try {
             if (roomno) {
@@ -588,23 +532,18 @@ const videoGroup = () => {
 
     }, [roomno])
 
-
-    // console.log(allStreams)
-    // console.log(otherUserDetails)
-    console.log(alreadyJoin)
+    // console.log(alreadyJoin)
 
     useEffect(() => {
         try {
             if (yourStream) {
-                console.log("stream")
+                // console.log("stream")
                 peerConn.current.on('call', call => {
-                    // !alreadyJoin[roomno].includes(call.metadata.peerId) ?
-                    //     call.answer(yourStream) : ''
-                    call.answer(yourStream)
+                    alreadyJoin[roomno].includes(call.metadata.peerId) ? call.answer() : call.answer(yourStream)
                     call.on('stream', stream => {
                         !alreadyJoin[roomno].includes(call.metadata.peerId) ?
                             (() => {
-                                console.log('recieve call')
+                                // console.log('recieve call')
                                 const obj = alreadyJoin
                                 !obj[roomno] ? obj[roomno] = [] : ''
                                 obj[roomno].push(call.metadata.peerId)
@@ -640,6 +579,7 @@ const videoGroup = () => {
 
     }, [yourStream])
     // console.log(allChats)
+    // console.log(allStreams) 
 
     // all socket handels
     useEffect(() => {
@@ -671,17 +611,16 @@ const videoGroup = () => {
 
             //handel disconnect
             socket.on('disconnected', (data) => {
-                // console.log(data)
-                removeStream(data.peerId)
+                data.peerId ? (() => {
+                    const roomId = generateId()
+                    const obj = removedPeer
+                    !obj[roomId] ? obj[roomId] = [] : ''
 
-                const obj = alreadyJoin
-                const index = obj[roomno].indexOf(data.peerId)
-                if (index !== -1) {
-                    obj[roomno].splice(index, 1)
-                }
-                setalreadyJoin(obj)
+                    !obj[roomId].includes(data.peerId) ? removeStream(data.peerId) : ''
 
-                data.peerId === yourId ? window.close() : ''
+                    !obj[roomId].includes(data.peerId) ? obj[roomId].push(data.peerId) : ''
+                    setremovedPeer(obj)
+                })() : ''
             })
         } catch (error) {
             setiserror(true)
@@ -690,9 +629,10 @@ const videoGroup = () => {
         }
 
 
-    }, [])
-    console.log(alreadyJoin)
-    // to make peer call funcationable
+    }, [alreadyJoin])
+
+    // console.log(alreadyJoin)
+
     useEffect(() => {
         newJoiner && yourStream ? (() => {
             !alreadyJoin[roomno] ? alreadyJoin[roomno] = [] : ''
@@ -712,6 +652,7 @@ const videoGroup = () => {
         generateId()
         getUserDetails()
         checkUser()
+
     }, [])
 
     //call function to strat streaming
@@ -725,39 +666,12 @@ const videoGroup = () => {
         if (localVideo.current) {
             Start()
         }
+        // setSizeOfSidePannel()
     }, [ownerId])
 
     useEffect(() => {
         localVideo.current ? resizeVideoItem() : ''
     }, [localVideo.current])
-
-
-    window.addEventListener('resize', () => {
-        document.querySelectorAll('.videoItem') ? (() => {
-            windowsize.height === window.innerHeight ? resizeVideoItem() : ''
-        })() : ''
-
-    })
-
-    //when window is resize
-    window.addEventListener('resize', () => {
-        if (document.querySelector('.chatbox')) {
-            document.querySelector('.chatbox').style.height = `${window.innerHeight * 0.7}px`
-        }
-        if (document.querySelector('.videoAndChat')) {
-            // window.innerWidth > 768 ? document.querySelector('.videoAndChat').style.height = `${window.innerHeight}px` : document.querySelector('.videoAndChat').style.height = `${window.innerHeight * 1.4}px`
-        }
-        if (window.innerWidth < 768) {
-            document.querySelector('.sidepannel') ? document.querySelector('.sidepannel').style.display = 'flex' : ''
-        } else {
-            document.querySelector('.sidepannel') ? document.querySelector('.sidepannel').style.display = 'block' : ''
-        }
-    })
-
-    //when window is loaded
-    window.addEventListener('beforeunload', (e) => {
-        // disconnectClient()
-    })
 
     useEffect(() => {
         const chats = localStorage.getItem('allChats')
@@ -769,7 +683,7 @@ const videoGroup = () => {
     useEffect(() => {
         let isProgress = false
         if (allStreams.length > 0 && !isProgress) {
-
+            const roomId = generateId()
             const startCount = Array.from(document.querySelectorAll('.videoItem')).length - 1
 
             for (let index = startCount; index < allStreams.length; index++) {
@@ -781,12 +695,28 @@ const videoGroup = () => {
     }, [streamCount, userDataCount, otherUserDetails.length, allStreams.length])
 
 
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('.videoItem') ? resizeVideoItem() : ''
+    })
+
+    //when window is resize
+    window.addEventListener('resize', () => {
+        if (document.querySelector('.chatbox')) {
+            document.querySelector('.chatbox').style.height = `${window.innerHeight * 0.7}px`
+        }
+        // setSizeOfSidePannel()
+    })
+
+    window.addEventListener('beforeunload', () => {
+        socketConn.current.emit('disconnected', { peerId: yourId, roomno: roomno })
+    })
+
     return (
         <>  <Leave disconnectClient={disconnectClient} />
 
-            {(user == {} || !yourId || !ownerId) && iserror === null && isAuthorized === null && <Loader />}
+            {(user == {} || !yourId || !ownerId) && isAuthorized === null && <Loader />}
 
-            {iserror === true && iserror !== null && <Error status={errorStatus} message={errorMessage} />}
+            {/* {iserror === true && iserror !== null && <Error status={errorStatus} message={errorMessage} />} */}
 
             {user.firstName && user.lastName && yourId && ownerId && !iserror && isAuthorized !== null && !iserror && <div className=' w-100 position-absolute overflow-x-hidden'>
 
@@ -826,10 +756,11 @@ const videoGroup = () => {
                 </div>
 
                 <div className="mainsection " >
+
                     <div className="videoAndChat rounded-4 m-3 h-100 position-relative overflow-x-hidden overflow-y-auto d-flex align-items-md-start flex-md-row flex-column" style={{ backgroundColor: "#cbdbfd", scrollbarWidth: "thin", height: `${window.innerHeight}px` }} >
 
                         <div className="videogroup h-100 w-100 p-2 overflow-auto rounded-4 position-relative " >
-                            <div className="videoItem rounded-3 my-2 mx-2" pined="false" onMouseOver={(e) => { e.preventDefault(); getOverlayer(e.currentTarget) }} onMouseLeave={(e) => { e.preventDefault(); removeOverlayer(e.currentTarget) }} >
+                            <div className="videoItem rounded-3 my-2 mx-md-2 mx-0" pined="false" onMouseOver={(e) => { e.preventDefault(); getOverlayer(e.currentTarget) }} onMouseLeave={(e) => { e.preventDefault(); removeOverlayer(e.currentTarget) }} >
 
                                 <div className="name position-absolute top-0 start-0 fw-semibold fs-5 z-2 rounded-3 px-2 py-1 text-white" style={{ backgroundColor: "#0606066b" }}>
                                     {`${user.firstName} ${user.lastName}`}
@@ -838,25 +769,6 @@ const videoGroup = () => {
                                 <div className='otherVideoControl rounded-3 w-100 my-auto position-absolute h-100 d-none z-2 d-flex justify-content-center align-items-center'>
                                     <div className="controls rounded-4 d-flex justify-content-center align-items-center px-3 py-1" style={{ backgroundColor: "rgb(0 0 0 /70%)" }}>
                                         <div className="fullscreen mx-2 my-1" style={{ cursor: 'pointer' }} onClick={handelFullscreen}><i className="fa-solid fa-expand fs-3 fw-bold" style={{ color: "white" }}></i></div>
-                                        <div className="pinVideo mx-3 my-1" style={{ cursor: 'pointer' }} onClick={(e) => {
-                                            const index = Array.from(document.querySelectorAll('.videoItem')).indexOf(e.currentTarget.parentElement.parentElement.parentElement)
-                                            pinVideo(e, index)
-                                        }}>
-                                            <svg style={{ width: "30px" }} version="1.1" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
-                                                <path transform="translate(1392)" d="m0 0h44l1 4 2 1v2l4 2 11 9 10 9 4 3v2l4 2 336 336 5 6 7 6 6 7 6 5 5 6 7 6 5 6 7 6 5 6 7 6 6 7 6 5 5 6 7 6 4 4v2l4 2 6 7 6 5 5 6 7 6 5 6 7 6 6 7 6 5 6 7 6 5 6 7 6 5 4 4v2l4 2 5 6 8 7 5 5v2h2l7 8 13 13 10 14 8 17 1 4v11l-4 14-9 14-12 11-19 14-20 13-14 7-17 5-28 5-18 5h-21l-10-3h-11l-7 1-12-5-28-10-10-5-9 10-8 11-9 11-8 10-13 15-9 10-7 8-12 14-11 14-9 11-15 16-9 11-6 8h-2l-2 4-12 14-9 10-7 8-12 14-9 11-10 13-8 8-8 10h-2l-2 4-22 26-7 8-9 10-7 8-12 14-11 14-9 11-13 14-9 11-9 10-9 11-11 12-9 11-11 12-9 11-10 11-7 8-14 17-11 13-12 14-9 11-10 11-7 8-12 14-11 12-8 10h-2l-2 4-10 12-7 8-11 11h-2l4 10 10 14 10 15 9 16 7 16 9 25 6 19 4 17 2 15v13l1 5v16l-5 37-5 23-5 16-11 25-9 16-10 14-11 14-8 10-9 10-11 9-17 9-8 3h-9l-13-4-13-7-17-14-12-12-6-5-7-8-279-279-8-5-4-1-8 6-10 9-20 20-5 6-4 4h-2l-2 4-16 16h-2l-2 4-14 13-2 3h-2l-2 4-8 7-8 9-8 7-4 5-8 7-221 221-8 7-13 13-8 7-13 12-9 9-8 7-9 9-8 7-14 13-8 7-15 13-14 12-8 7-16 15-14 12-11 10-11 9-14 12-8 7-30 26-14 12-8 7-15 14-14 11-13 11-13 10-18 14-13 11-10 8-9 8-28 22-10 9-11 8-15 10-23 12v3h-37l3-3-1-4-9-9-8-7-8-12-4-14v-8l6-15 6-12 9-14 10-13 11-13 7-9 10-13 2-3h2l2-4 10-13 11-14 11-13 13-16 7-8 10-13 10-11 9-11 12-14 12-13 8-10 13-14 1-2h2l2-4 12-13 7-8 9-10 14-17 9-10 18-22h2l2-4 11-12 13-15 7-7 7-8 11-12 1-2h2v-2l8-7 9-10 10-10 7-8 15-16 7-8 9-10 16-17 14-14 1-2h2l2-4h2l2-4 4-4h2l2-4 4-4h2l2-4 84-84h2l2-4 4-4h2l2-4 4-4h2l2-4 4-4h2l2-4h2l2-4h2l2-4 4-4h2l2-4h2l2-4h2l2-4 98-98 6-7h2l1-3 8-7 17-17h2v-2l8-7h2l2-4 4-4h2v-2h2l-1-5-5-5v-2l-4-2-12-12v-2l-4-2-32-32v-2l-4-2-4-4v-2h-2l-7-8-227-227-6-5-6-7-6-5-7-8-8-8-11-14-8-14-2-5v-17l5-13 9-14 15-16 17-13 14-10 15-10 23-12 21-8 16-5 23-4 25-2h18l29 3 30 5 27 9 29 13 19 12 14 10 11 11 4-2 8-7 12-11 8-7 8-8 8-7 9-8 17-13 13-11 10-8 10-9 13-11 8-7 14-12 6-6h2v-2l11-9 11-10 14-11 13-11 10-8 10-9 14-12 11-10 8-7 10-9 11-9 10-9 22-18 9-8 11-9 11-10 11-9 10-9 8-7 14-12 10-9 11-9 17-14 10-9 11-9 10-9 11-9 10-9 8-7 14-12 10-9 11-9 11-10 8-7 13-11 14-11 11-9 10-9 11-9 7-7-1-7-10-22-5-16-4-19-1-8v-24l5-25 6-29 5-12 9-16 9-14 8-12 9-11 11-12 9-8z" fill="#fff" />
-                                                <path transform="translate(2047,623)" d="m0 0h1v6l-3-1z" fill="#fff" />
-                                                <path transform="translate(1290,1288)" d="m0 0 5 1v2l-4-1z" fill="#fff" />
-                                                <path transform="translate(0,2046)" d="m0 0 4 1-4 1z" />
-                                                <path transform="translate(1296,1287)" d="m0 0 2 1-2 1z" fill="#aaa" />
-                                                <path transform="translate(1439)" d="m0 0 3 1z" fill="#fff" />
-                                                <path transform="translate(75,2047)" d="m0 0 2 1z" fill="#fff" />
-                                                <path transform="translate(1437)" d="m0 0" fill="#fff" />
-                                            </svg>
-                                            <svg className=" d-none" style={{ width: "30px" }} version="1.1" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
-                                                <path transform="translate(1361,60)" d="m0 0h49l23 2 23 4 24 6 21 7 21 9 22 11 19 12 16 11 13 10 13 11 8 8 8 7 227 227 7 8 21 21 7 8 12 14 10 14 10 15 12 21 10 21 10 26 7 23 5 22 4 33 1 17v13l-2 27-3 23-6 28-7 24-10 25-13 27-11 19-9 14-8 10-9 10-2 3h-2l-2 4-22 22-8 7-10 8-15 11-27 18-16 10-17 11-24 15-27 18-28 17-25 16-20 13-69 44-13 8-24 15-30 20-22 14-17 11-23 15-22 14-16 9-9 6-7 6-4 1-13-12-17-17-7-8-344-344-6-5-7-8-6-5v-2l-3-1-6-7-3-2v-2l-3-1-7-8-3-2v-2l-3-1-6-7-3-2v-2l-3-1-6-7-3-2v-2l-3-1v-2h-2l-4-4v-2l-4-2-7-8-2-1v-2l-4-2-5-6-8-7-56-56-2-3 1-5 5-5 7-10 10-16 18-27 13-23 20-30 12-19 10-16 16-25 16-24 13-22 18-27 7-11 11-17 8-13 11-18 16-24 10-16 13-19 12-20 7-11 13-20 10-16 12-17 11-14 10-11 1-2h2l2-4 8-8 8-7 15-13 18-13 22-14 18-10 15-7 26-10 31-8 22-4z" fill="#FEFEFE" />
-                                                <path transform="translate(127,85)" d="m0 0 6 1 6 5v2l4 2 11 12 4 3v2l4 2 776 776v2l4 2 8 8v2l4 2 9 9v2l4 2 8 8v2l4 2 8 8v2l4 2 18 18v2l3 1 3 3v2l4 2 6 7 2 1v2l4 2 3 3v2h2l4 5 6 5 6 7 6 5 6 7 7 6v2h2l10 10v2l3 1 3 3v2l4 2 6 7 8 7 4 5 8 7 4 4v2l4 2 21 21v2l4 2 8 8v2l4 2 33 33v2l4 2 21 21v2l4 2 11 11v2l4 2 9 10 5 4 7 8 6 5 7 8 5 4 7 8 5 4 7 8 3 2v2l3 1 7 8 2 1v2l3 1 4 5 2 1v2l4 2 3 3v2h2l4 4v2l4 2 5 5v2l4 2 582 582 5 4 3 4-1 5-10 10-8 7-9 10-31 31-4 5-4 3-5-2-8-8-7-8-142-142-6-5v-2h-2l-7-8-210-210-3-2v-2l-3-1v-2l-3-1v-2l-4-2-18-18v-2l-3-1v-2l-4-2-2-4-3-1-4-5-89-89-8-7-19-19-7-8-10-9-3-1-1 11-10 37-8 25-8 22-10 23-10 21-14 24-12 21-13 21-11 15-13 16-10 13-13 15-14 16-8 7-5 6-8 7-9 10-7 8-5 1-8-7-6-7-8-7-26-26-7-8-10-10-8-7-59-59-7-8-11-11-8-7-26-26-7-8-32-32-8-7-55-55-7-8-15-14-23-23-13-12-16-16-7-6-6 1-10 9-23 23-7 8-8 7-86 86-5 6-6 5-7 8-5 4-7 8-5 4-7 8-6 5-5 6-8 7-19 19-12 13-13 13h-2l-2 4-20 20-8 7-5 5-11 12-6 5-7 8-40 40h-2l-2 4-9 8-7 8-6 5-7 8-6 5-7 8-5 4-7 8-6 5-7 8-5 4-5 6h-2v2l-8 7-12 12-5 6-62 62-8 7-7 7-10 7-19 8-28 12-25 10-13 6-24 10-4 2-3-1 8-13 21-49 11-26 6-13 4-11 6-10 12-13 5-5h2v-2l8-7 12-13 14-14 7-8 4-2 2-4 8-8h2l2-4 95-95h2l2-4 141-141 7-6 7-8 3-1 2-4 30-30 7-6 7-8 63-63h2l2-4 17-17 8-7 15-15 7-8 20-20h2v-2h2l2-4 9-7 1-2-4-2-11-9-25-25-7-8-23-23-7-8-31-31-8-7-51-51-7-8-7-7-8-7-64-64-7-8-8-8-8-7-21-21-7-8-26-26-8-7-30-30-1-3 3-6 12-11 7-7 8-7 18-18 8-7 12-11 26-20 18-13 14-10 19-12 24-13 16-9 23-11 26-10 33-11 29-8 15-4 7-1-7-9-31-31v-2l-4-2-11-12-5-5-16-15-10-10v-2h-2l-7-8-330-330-8-7-44-44-7-8-34-34-8-7-13-13-7-8-13-13-6-8-1-3 16-15 7-7 8-7z" fill="#FEFEFE" />
-                                            </svg>
-                                        </div>
                                         <div className="screenShare mx-2 my-1" style={{ cursor: 'pointer', width: "40px" }} onClick={startScreenShare}>
                                             <svg className={`w-100 ${isSharing ? 'd-none' : ""}`} version="1.1" viewBox="0 0 2048 2028" xmlns="http://www.w3.org/2000/svg" >
                                                 <path transform="translate(361,359)" d="m0 0h1325l23 3 19 5 19 8 17 10 11 8 13 11 10 10 10 13 9 14 8 16 7 19 4 17 2 16v839l-3 21-6 21-8 19-8 14-10 14-12 13-10 10-18 13-16 9-19 8-20 6 203 1 19 1 13 3 14 6 14 10 11 11 9 14 5 12 3 12 1 8v10l-2 14-6 17-6 10-8 10-9 9-13 8-14 6-15 3-18 1-1791-1-16-4-16-8-13-10-9-10-8-13-5-12-3-13v-21l4-17 5-12 8-12 11-12 13-9 12-6 16-4 12-1 211-1-21-6-18-8-13-7-12-8-13-11-6-5-7-8-10-12-12-19-9-20-6-21-3-19-1-15v-820l2-21 5-21 7-19 10-19 12-17 12-13 8-8 17-13 19-11 17-7 13-4 20-4zm745 246v171l-29 5-39 8-37 10-36 12-27 11-24 11-25 13-17 10-17 11-20 14-14 11-14 12-8 7-12 11-19 19-7 8-9 10-8 10-11 14-13 18-13 20-12 20-12 22-11 22-14 32-13 35-9 28-11 40-6 24-1 6 6-5 9-12 12-14 9-11 7-7v-2l3-1 7-8 14-14 8-7 11-10 14-11 18-14 27-18 24-14 21-11 20-9 25-10 33-11 34-9 34-7 33-5 37-4 31-2 37-1h14v176l4-2v-2l4-2 11-11 8-7 12-12 8-7 9-9 8-7 17-16 13-12 8-8 8-7 7-7 8-7 9-9 8-7 17-16 7-6v-2l4-2 11-11 8-7 9-9 8-7 17-16 32-30 7-6v-2l4-2 9-9 8-7 15-15 5-10 2-7v-14l-4-11-6-9-15-15h-2v-2l-8-7-16-15-8-7-9-9-8-7-7-7-8-7-7-7-8-7-16-15-12-11-7-7-8-7-8-8-8-7-12-11-17-16-13-12-17-16-8-7-8-8-8-7-9-9-8-7-17-16-10-9-8-7zm-762 892m1353 0v1h6v-1z" fill="white" />
@@ -874,13 +786,12 @@ const videoGroup = () => {
 
                             </div>
                         </div>
-                        <div className="unpinVideoItems d-none overflow-hidden" >
-                            <div className="sidepannel h-100 overflow-auto" style={{ scrollbarWidth: "thin", scrollbarColor: "#022b85 #99b9ff" }}></div>
-                        </div>
+
 
                         {/* local video controls  */}
 
                     </div>
+
                     <div id="controls" className={` z-3 py-2 mx-3 rounded-3 mb-3 d-flex justify-content-center align-items-center`} style={{ backgroundColor: "#000000c2" }}>
                         <div className="close mx-1 rounded-circle" style={{ cursor: "pointer", width: "45px" }}><button className="close border-0" data-bs-toggle="modal" data-bs-target="#exampleModalLeave" style={{ outline: 'none', backgroundColor: 'transparent' }}>
                             <svg className=" w-100" version="1.0" xmlns="http://www.w3.org/2000/svg"
