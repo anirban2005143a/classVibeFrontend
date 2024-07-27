@@ -51,7 +51,7 @@ const videoGroup = () => {
     const [newJoiner, setnewJoiner] = useState(null)
     const [isSharing, setisSharing] = useState(null)
     const [alreadyJoin, setalreadyJoin] = useState({})
-    const [removedPeer, setremovedPeer] = useState({})
+    const [removedPeer, setremovedPeer] = useState([])
 
     const [user, setuser] = useState({})
     const [allChats, setallChats] = useState([])
@@ -109,21 +109,21 @@ const videoGroup = () => {
 
     //function to call other
     const callOther = (peerId, stream) => {
-        // console.log("calling")
+        const roomId = generateId()
         try {
             if (peerId && peerId !== yourId) {
-                // console.log(peerId, yourId)
+                // !alreadyJoin[roomId].includes(peerId) ?
+                // (() => {
                 const call = peerConn.current.call(`${peerId}`, stream, {
                     metadata: { user: user, peerId: yourId }
                 })
-                // console.log(peerId, call)
                 call.on('stream', stream => {
                     const arr = allStreams
                     arr.push(stream)
-                    // console.log(stream)
                     setallStreams(arr)
                     setstreamCount(arr.length)
                 })
+                // })() : ''
             }
         } catch {
             setiserror(true)
@@ -306,8 +306,7 @@ const videoGroup = () => {
     }
 
     //function to create video item and append
-    const createVideoItem = (stream, index) => {
-
+    const createVideoItem = (stream, index, roomId) => {
         // console.log(otherUserDetails[index])
         if (otherUserDetails[index]) {
 
@@ -389,7 +388,6 @@ const videoGroup = () => {
         target.querySelector('button').querySelector('img').classList.add('d-none')
         target.querySelector('button').querySelector('i').classList.remove('d-none')
         const message = target.querySelector('input').value
-
         try {
             //send message to socket
             socketConn.current.emit('chatMessage', { message, roomno, userId: value.userId, userName: `${user.presentClientsName} ${user.lastName}` })
@@ -421,15 +419,19 @@ const videoGroup = () => {
             item.getAttribute('peerId') === peerId ? videoGroup.removeChild(item) : ''
         })
         const roomId = generateId()
-        const obj = alreadyJoin
+
+        const obj1 = alreadyJoin
         const index = alreadyJoin[roomId].indexOf(peerId)
-        obj[roomId].splice(index, 1)
-        setalreadyJoin(obj)
+        obj1[roomId].splice(index, 1)
+        setalreadyJoin(obj1)
+
     }
 
-    console.log(alreadyJoin)
-    console.log(removedPeer)
-    console.log(otherUserDetails)
+    // console.log(alreadyJoin)
+    // console.log(removedPeer)
+    // console.log(allStreams)
+    // console.log(otherUserDetails)
+    console.log(allChats)
 
     const resizeVideoItem = () => {
         if (document.querySelector('.videogroup')) {
@@ -492,6 +494,15 @@ const videoGroup = () => {
         }
     }
 
+    const storeAllMessage = (data) => {
+        let arr
+        localStorage.getItem('allChats') ?
+            arr = JSON.parse(localStorage.getItem('allChats')) : arr = []
+        arr.push(data)
+        setallChats(arr)
+        localStorage.setItem('allChats', JSON.stringify(arr))
+    }
+
     useEffect(() => {
         try {
             if (roomno) {
@@ -512,11 +523,12 @@ const videoGroup = () => {
                                 const obj = alreadyJoin
                                 !obj[roomno] ? obj[roomno] = [] : ''
 
-                                if (!obj[roomno].includes(data.peerId)) {
+                                if (!obj[roomno].includes(data.peerId) && !removedPeer.includes(data.peerId)) {
                                     const arr = otherUserDetails
                                     arr.push(data)
                                     setotherUserDetails(arr)
                                     setuserDataCount(arr.length)
+
                                     !obj[roomno].includes(data.peerId) ? obj[roomno].push(data.peerId) : ''
                                     setalreadyJoin(obj)
                                 }
@@ -557,7 +569,7 @@ const videoGroup = () => {
                                 changeStream(call.metadata.peerId, stream)
                             })()
                     })
-                    !alreadyJoin[roomno].includes(call.metadata.peerId) ?
+                    !alreadyJoin[roomno].includes(call.metadata.peerId) && !removedPeer.includes(call.metadata.peerId) ?
                         (() => {
                             sendAdditionalInfo(call.metadata.peerId, { user: user, peerId: yourId })
                             const arr = otherUserDetails
@@ -565,10 +577,6 @@ const videoGroup = () => {
                             setotherUserDetails(arr)
                             setuserDataCount(arr.length)
                         })() : ''
-
-
-
-
                 })
             }
         } catch (error) {
@@ -578,6 +586,7 @@ const videoGroup = () => {
         }
 
     }, [yourStream])
+
     // console.log(allChats)
     // console.log(allStreams) 
 
@@ -595,11 +604,7 @@ const videoGroup = () => {
 
             //handle chat messages
             socket.on('chatMessage', (data) => {
-                const arr = allChats
-                arr.push(data)
-                setallChats(arr)
-                localStorage.setItem('allChats', JSON.stringify(arr))
-
+                storeAllMessage(data)
                 //set previous style of input box and btn
                 document.querySelector('#exampleChatInput').value = ''
                 if (document.querySelector('.sendMessage')) {
@@ -612,14 +617,27 @@ const videoGroup = () => {
             //handel disconnect
             socket.on('disconnected', (data) => {
                 data.peerId ? (() => {
-                    const roomId = generateId()
+
                     const obj = removedPeer
-                    !obj[roomId] ? obj[roomId] = [] : ''
-
-                    !obj[roomId].includes(data.peerId) ? removeStream(data.peerId) : ''
-
-                    !obj[roomId].includes(data.peerId) ? obj[roomId].push(data.peerId) : ''
+                    !obj.includes(data.peerId) ? removeStream(data.peerId) : ''
+                    !obj.includes(data.peerId) ? obj.push(data.peerId) : ''
                     setremovedPeer(obj)
+
+                    const obj2 = otherUserDetails
+                    let userIndex
+                    for (let i = 0; i < obj2.length; i++) {
+                        obj2[i].peerId === data.peerId ? userIndex = i : ''
+                    }
+                    const filterObj2 = obj2.filter(obj => obj.peerId !== data.peerId)
+                    console.log(filterObj2)
+                    setotherUserDetails(filterObj2)
+                    setuserDataCount(filterObj2.length)
+
+                    const obj3 = allStreams
+                    const filterObj3 = obj3.filter((obj, index) => { return index !== userIndex })
+                    setallStreams(filterObj3)
+                    setstreamCount(filterObj3.length)
+
                 })() : ''
             })
         } catch (error) {
@@ -646,6 +664,16 @@ const videoGroup = () => {
         sendScreenToCaller(yourStream)
     }, [yourStream])
 
+    useEffect(() => {
+
+        console.log("removed", otherUserDetails)
+        removedPeer.forEach((peerId) => {
+            const arr = otherUserDetails
+            const filterArr = arr.filter((item) => item.peerId !== peerId)
+            setotherUserDetails(filterArr)
+            setuserDataCount(filterArr.length)
+        })
+    }, [removedPeer.length])
 
     //set room no
     useEffect(() => {
@@ -674,21 +702,19 @@ const videoGroup = () => {
     }, [localVideo.current])
 
     useEffect(() => {
-        const chats = localStorage.getItem('allChats')
-        if (chats) {
-            setallChats(JSON.parse(chats))
-        }
+        localStorage.getItem('allChats') ?
+            setallChats(JSON.parse(localStorage.getItem('allChats'))) : ''
     }, [])
 
     useEffect(() => {
+        // console.log("gtghtryhYHy")
         let isProgress = false
         if (allStreams.length > 0 && !isProgress) {
             const roomId = generateId()
             const startCount = Array.from(document.querySelectorAll('.videoItem')).length - 1
-
             for (let index = startCount; index < allStreams.length; index++) {
                 isProgress = true
-                createVideoItem(allStreams[index], index)
+                createVideoItem(allStreams[index], index, roomId)
                 index === allStreams.length - 1 ? isProgress = false : isProgress = true
             }
         }
@@ -699,16 +725,12 @@ const videoGroup = () => {
         document.querySelectorAll('.videoItem') ? resizeVideoItem() : ''
     })
 
-    //when window is resize
-    window.addEventListener('resize', () => {
-        if (document.querySelector('.chatbox')) {
-            document.querySelector('.chatbox').style.height = `${window.innerHeight * 0.7}px`
-        }
-        // setSizeOfSidePannel()
-    })
-
     window.addEventListener('beforeunload', () => {
         socketConn.current.emit('disconnected', { peerId: yourId, roomno: roomno })
+    })
+
+    window.addEventListener('close' , ()=>{
+        localStorage.removeItem('allChats')
     })
 
     return (
@@ -725,15 +747,19 @@ const videoGroup = () => {
                 </div>
 
                 <div className="chatbox bg-body-secondary d-none overflow-hidden rounded-3 z-3 d-flex flex-column " style={{ width: "40%", height: `${window.innerHeight * 0.7}px`, boxShadow: "0 0 20px #0000ff75" }}>
-                    {allChats.map((chat) => {
+                  <div className="allMessages overflow-y-auto" style={{marginBottom :"50px" , scrollbarWidth:'thin'}}>
+                     {allChats.map((chat) => {
                         // console.log(chat.userId, value.userId)
-                        return <div key={uuidv4()} className={`allMessages rounded-3  d-flex ${chat.userId === value.userId ? 'justify-content-end' : ""}`}>
-                            <div className={`singleChat p-2 m-2 rounded-3 ${chat.userId === value.userId ? 'bg-primary-subtle' : 'bg-body-tertiary'}`} style={{ width: "70%" }}>
+                        console.log("hello")
+                        return <div key={uuidv4()} className={` rounded-3  d-flex ${chat.userId === value.userId ? 'justify-content-end' : ""}`}>
+                            <div  className={`singleChat p-2 m-2 rounded-3 ${chat.userId === value.userId ? 'bg-primary-subtle' : 'bg-body-tertiary'}`} style={{ width: "70%" }}>
                                 <div ref={senderName} className={`senderName fw-lighter ${chat.userId === value.userId ? 'text-end' : ''}`}>{chat.userId === value.userId ? 'you' : chat.userName}</div>
                                 <div ref={senderMessage} className={`senderMessage fw-semibold h-auto ${chat.userId === value.userId ? 'text-end' : ''}`}>{chat.message}</div>
                             </div>
                         </div>
                     })}
+                  </div>
+                   
                     <form onSubmit={(e) => {
                         e.preventDefault()
                         sendMessage(e.currentTarget)
@@ -757,7 +783,7 @@ const videoGroup = () => {
 
                 <div className="mainsection " >
 
-                    <div className="videoAndChat rounded-4 m-3 h-100 position-relative overflow-x-hidden overflow-y-auto d-flex align-items-md-start flex-md-row flex-column" style={{ backgroundColor: "#cbdbfd", scrollbarWidth: "thin", height: `${window.innerHeight}px` }} >
+                    <div className="videoAndChat rounded-4 m-3 position-relative overflow-x-hidden overflow-y-auto d-flex align-items-md-start flex-md-row flex-column" style={{ backgroundColor: "#cbdbfd", scrollbarWidth: "thin", height: `${window.innerHeight}px` }} >
 
                         <div className="videogroup h-100 w-100 p-2 overflow-auto rounded-4 position-relative " >
                             <div className="videoItem rounded-3 my-2 mx-md-2 mx-0" pined="false" onMouseOver={(e) => { e.preventDefault(); getOverlayer(e.currentTarget) }} onMouseLeave={(e) => { e.preventDefault(); removeOverlayer(e.currentTarget) }} >
