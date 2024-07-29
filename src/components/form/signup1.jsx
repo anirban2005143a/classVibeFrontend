@@ -11,7 +11,7 @@ const login1 = () => {
 
     return (
         <>
-            <div className=' w-100 position-absolute h-100' id="signup" >
+            <div className=' w-100 position-absolute h-100' id="login" >
                 <div className="formSideAd w-50 h-100 position-relative ps-3">
 
                     <div className="AdImg z-1 position-relative " style={{ width: '60%' }}>
@@ -31,29 +31,12 @@ const login1 = () => {
                             e.preventDefault()
                             e.currentTarget.querySelector('button').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`
                             e.currentTarget.querySelector('button').disabled = true
-                            setverificationMessage(false)
-                            const password = e.currentTarget.querySelector('#exampleFormControlPassword').value.trim()
-                            signUp(password, e.currentTarget)
+                            const password = e.currentTarget.querySelector('#exampleFormControlInput2').value.trim()
+                            loginUser(password, e.currentTarget)
                         }}>
-                            <div className="firstname w-100  my-2">
-                                <div className="form__group field">
-                                    <input type="text" className="form__field" placeholder="First Name" required value={firstName} onChange={(e) => {
-                                        e.preventDefault()
-                                        setfirstName(e.target.value.trim())
-                                    }} />
-                                    <label for="name" className="form__label">First Name</label>
-                                </div>
-                            </div>
 
-                            <div className="lastname w-100 my-2">
-                                <div className="form__group field">
-                                    <input type="text" className="form__field" placeholder="Last Name" required value={lastName} onChange={(e) => {
-                                        e.preventDefault()
-                                        setlastName(e.target.value.trim())
-                                    }} />
-                                    <label for="name" className="form__label">Last Name</label>
-                                </div>
-                            </div>
+
+
                             <div className="email w-100 my-2">
                                 <div className="form__group field">
                                     <input type="email" className="form__field" placeholder="Email" required value={email} onChange={(e) => {
@@ -70,11 +53,9 @@ const login1 = () => {
                                 </div>
                             </div>
                             {/* verification alert  */}
-                            {verificationMessage && <p className=' m-0 fw-semibold fs-6' style={{ color: "#00008c" }}>{verificationMessage}</p>}
-
-
-                            {/* already have account  */}
-                            <p className=' mt-3'>Already have an account ? <Link to="/login" className=' fw-semibold text-decoration-none' >log-in</Link></p>
+                            {forgotPassword && <p className=' m-0 my-2 fw-normal text-danger fs-6' >Forgot password ? <span className=' text-primary' onMouseOver={addhoverEffect} onMouseLeave={removehoverEffect} onClick={changePassword} style={{ cursor: "pointer", fontWeight: "400" }}>Change</span></p>}
+                            {/* create account  */}
+                            <p className=' my-2'>Don't have any account ? <Link to="/signup" className=' text-decoration-none' onMouseOver={addhoverEffect} onMouseLeave={removehoverEffect} style={{ fontWeight: 400 }}>Create account</Link></p>
                             {/* submit button  */}
                             <div type="submit" className="submitBtn my-3">
                                 <button id="submitBtn">

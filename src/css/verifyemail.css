@@ -1,9 +1,16 @@
+#emailVerificationPage{
+    background-image: url('../assets/wave (1).png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: 50px;
+}
 .verifyContainer{
     width: 50%;
     height: 90%;
-    box-shadow: 0 0 10px blue;
+    box-shadow: 0 0 60px 0px rgba(0, 0, 0, 0.605);
     scrollbar-width: thin;
     scrollbar-color: #0051ff #99b9ff;
+    background-color: rgb(255, 255, 255);
 }
 
 @media only screen and (max-width : 800px){
@@ -26,6 +33,7 @@
 
 .svgIcon .svg{
     width: 30%;
+    margin:50px 0px 30px 0px;
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
 }

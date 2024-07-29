@@ -62,7 +62,8 @@
   box-shadow: none;
 }
 
-#signup button.submitBtn {
+#signup button.submitBtn,
+#login button.submitBtn {
   color: rgb(25, 0, 255);
   text-transform: uppercase;
   text-decoration: none;
@@ -76,11 +77,13 @@
   overflow: hidden;
 }
 
-#signup button.submitBtn:hover {
+#signup button.submitBtn:hover,
+#login button.submitBtn:hover {
   color: white;
 }
 
-#signup button.submitBtn::before {
+#signup button.submitBtn::before,
+#login button.submitBtn::before {
   content: '';
   position: absolute;
   height: 100%;
@@ -93,13 +96,13 @@
   transition: all 1s;
 }
 
-#signup button.submitBtn:hover::before {
+#signup button.submitBtn:hover::before,
+#login button.submitBtn:hover::before {
   width: 160%;
 }
 
-#signup form .loader{}
-
-#signup form .loader {
+#signup form .loader,
+#login form .loader {
   --cell-size: 15px;
   --cell-spacing: 1px;
   --cells: 3;
@@ -110,7 +113,8 @@
   height: var(--total-size);
 }
 
-#signup form .loader .cell {
+#signup form .loader .cell,
+#login form .loader .cell {
   flex: 0 0 var(--cell-size);
   margin: var(--cell-spacing);
   background-color: transparent;
@@ -119,55 +123,68 @@
   animation: 1.5s ripple ease infinite;
 }
 
-#signup form .loader .cell.d-1 {
+#signup form .loader .cell.d-1,
+#login form .loader .cell.d-1 {
   animation-delay: 100ms;
 }
 
-#signup form .loader .cell.d-2 {
+#signup form .loader .cell.d-2,
+#login form .loader .cell.d-2 {
   animation-delay: 200ms;
 }
 
-#signup form .loader .cell.d-3 {
+#signup form .loader .cell.d-3,
+#login form .loader .cell.d-3 {
   animation-delay: 300ms;
 }
 
-#signup form .loader .cell.d-4 {
+#signup form .loader .cell.d-4,
+#login form .loader .cell.d-4 {
   animation-delay: 400ms;
 }
 
-#signup form .loader .cell:nth-child(1) {
+#signup form .loader .cell:nth-child(1),
+#login form .loader .cell:nth-child(1) {
   --cell-color: #0026ff;
 }
 
-#signup form .loader .cell:nth-child(2) {
+#signup form .loader .cell:nth-child(2),
+#login form .loader .cell:nth-child(2) {
   --cell-color: #0c44fd;
 }
 
-#signup form .loader .cell:nth-child(3) {
+#signup form .loader .cell:nth-child(3),
+#login form .loader .cell:nth-child(3) {
   --cell-color: #1732fb;
 }
 
-#signup form .loader .cell:nth-child(4) {
+#signup form .loader .cell:nth-child(4),
+#login form .loader .cell:nth-child(4) {
   --cell-color: #2343f9;
 }
 
-#signup form .loader .cell:nth-child(5) {
+#signup form .loader .cell:nth-child(5),
+#login form .loader .cell:nth-child(5) {
   --cell-color: #3058f7;
 }
 
-#signup form .loader .cell:nth-child(6) {
+#signup form .loader .cell:nth-child(6),
+#login form .loader .cell:nth-child(6) {
   --cell-color: #3d4cf5;
 }
 
-#signup form .loader .cell:nth-child(7) {
+#signup form .loader .cell:nth-child(7),
+#login form .loader .cell:nth-child(7) {
   --cell-color: #4559f4;
 }
 
-#signup form .loader .cell:nth-child(8) {
+#signup form .loader .cell:nth-child(8),
+#login form .loader .cell:nth-child(8) {
   --cell-color: #536df1;
 }
 
-#signup form .loader .cell:nth-child(9) {
+#signup form .loader .cell:nth-child(9),
+#login form .loader .cell:nth-child(9) {
   --cell-color: #606dff;
 }
 

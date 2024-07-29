@@ -1,0 +1,56 @@
+#login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+#login .formSideAd{
+    padding-top: 8%;
+    position: relative;
+    background-image: url('../assets/wave 5.png');
+    background-size: 40% 150%;
+    background-position-x: left;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+#login .formSideAd::before{
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    background-color: #27449f;
+}
+#login .loginForm {
+    width: 50%;
+    padding-top: 10%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+#login form {
+    width: 80%;
+    margin-bottom: 10%;
+    /* background-color: red; */
+}
+
+#login .loginForm .heading {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    background: linear-gradient(90deg, rgb(0, 60, 171) , rgb(85, 139, 255));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+#login .AdContent{
+    padding-top: 2%;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    line-height: 30px;
+}

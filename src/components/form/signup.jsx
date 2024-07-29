@@ -122,7 +122,7 @@ const signup = () => {
         </div>
 
         <div className="loginForm h-100 my-auto " >
-          <div className="heading">Welcome Back</div>
+          <div className="heading">Create Account</div>
           <div className="form w-100">
             <form className=' mx-auto d-flex flex-column align-items-center' onSubmit={(e) => {
               e.preventDefault()
@@ -173,7 +173,7 @@ const signup = () => {
               {/* already have account  */}
               <p className=' mt-2'>Already have an account ? <Link to="/login" className=' fw-semibold text-decoration-none' >log-in</Link></p>
               {/* submit button  */}
-              <div type="submit" className=" mb-2">
+              <div  className=" mb-2">
                 <button type="submit" className="submitBtn rounded-5">
                   Create
                 </button>
@@ -194,8 +194,6 @@ const signup = () => {
 
                 <div className="cell d-3"></div>
                 <div className="cell d-4"></div>
-
-
               </div>
 
             </form>
