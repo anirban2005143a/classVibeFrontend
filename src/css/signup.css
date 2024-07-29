@@ -1,0 +1,52 @@
+#signup {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+#signup .formSideAd{
+    padding-top: 8%;
+    position: relative;
+    background-image: url('../assets/wave (4).png');
+    background-size: 40% 150%;
+    background-position-x: right;
+    background-repeat: no-repeat;
+}
+#signup .formSideAd::before{
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background-color: #27449f;
+}
+#signup .loginForm {
+    width: 50%;
+    padding-top: 5%;
+    overflow: auto;
+}
+
+#signup form {
+    width: 80%;
+    margin-bottom: 10%;
+    /* background-color: red; */
+}
+
+#signup .loginForm .heading {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    background: linear-gradient(90deg, rgb(0, 60, 171) , rgb(85, 139, 255));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+#signup .AdContent{
+    padding-top: 2%;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    line-height: 30px;
+}
