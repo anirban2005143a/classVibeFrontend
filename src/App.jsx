@@ -9,7 +9,7 @@ import About from "./components/about";
 import VideoGroup from "./components/videoGroup";
 import VerifyEmail from "./components/verfyandforget/verifyEmail";
 import ForgetPassword from "./components/verfyandforget/forgetPassword";
-import Signup1 from "./components/form/signup1";
+import Home1 from "./components/home1";
 
 function App() {
 
@@ -60,7 +60,7 @@ function App() {
     },
     {
       path: "/hi",
-      element: <Signup1 />
+      element: <Home1 />
     },
   ])
 

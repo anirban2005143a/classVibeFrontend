@@ -1,0 +1,79 @@
+#homePart1{
+    width: 100%;
+    min-height: 500px;
+    background-image: url(../assets/wave.png);
+    background-size: 100% auto;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+}
+#homePart1 .frontBox{
+    display: flex;
+    justify-content: center;
+}
+#homePart1 .maincontent{
+    width: 60%;
+    padding: 20px 50px;
+    margin: 30px 50px;
+    background-color: #ffffff00;
+    overflow: hidden;
+    text-align: center;
+}
+
+#homePart1 .maincontent .heading span{
+    font-size: 50px;
+    font-weight: 700;
+    position: relative;
+    background: linear-gradient(74deg, #1222ff, #ab10ff, #0bffa6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+#homePart1 .maincontent .heading .span span{
+    z-index: 0;
+}
+
+#homePart1 .maincontent .heading .span::before,
+#homePart1 .maincontent .content::before,
+#homePart1 .maincontent .StartButton::before
+{
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    top: 0;
+    right:0;
+    z-index: 1;
+    /* transform: translateX(-50%); */
+    background-color: #ffffff;
+    animation: slideAnimate 700ms ease-in 0s;
+}
+#homePart1 .maincontent .content{
+    position: relative;
+    font-size: 20px;
+    font-weight: 500;
+}
+#homePart1 .maincontent .content span{
+    z-index: 0;
+}
+#homePart1 .maincontent .StartButton{
+    position: relative;
+}
+@keyframes slideAnimate{
+    0%{
+        opacity: 0;
+       width: 100%;
+    }
+    30%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+        width: 0%;
+    }
+}
+
+#homePart2{
+    background-image: linear-gradient(#4c60d8 , transparent);
+    transform: translateY(-10px);
+}

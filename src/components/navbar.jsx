@@ -11,14 +11,12 @@ const navbar = () => {
   const location = useLocation()
 
 
-
-
   return (
     <nav className=" navbar d-flex justify-content-between align-items-center">
       <div className="name my-1 mx-2">
         ClassVibe
       </div>
-      <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2 user-select-none">
+    {!window.location.pathname === "/hi" && <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2 user-select-none">
 
         <div className="home mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/" className={`text-decoration-none text-black ${location.pathname === "/" ? 'fw-semibold' : 'fw-normal'}`} >Home</Link></div>
         <div className="about mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/about" className={` text-decoration-none text-black  ${location.pathname === "/about" ? 'fw-semibold' : 'fw-normal'}`}>About</Link></div>
@@ -44,7 +42,7 @@ const navbar = () => {
           </ul>
         </div>
 
-      </div>
+      </div>}
     </nav>
   )
 }
