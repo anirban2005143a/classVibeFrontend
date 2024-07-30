@@ -1,4 +1,4 @@
-#homePart1{
+#homePart1 {
     width: 100%;
     min-height: 500px;
     background-image: url(../assets/wave.png);
@@ -6,74 +6,149 @@
     background-position-y: bottom;
     background-repeat: no-repeat;
 }
-#homePart1 .frontBox{
+
+#homePart1 .frontBox {
     display: flex;
     justify-content: center;
 }
-#homePart1 .maincontent{
+
+#homePart1 .maincontent {
     width: 60%;
     padding: 20px 50px;
     margin: 30px 50px;
     background-color: #ffffff00;
     overflow: hidden;
     text-align: center;
+    animation: TextBlur 800ms ease-in-out;
 }
 
-#homePart1 .maincontent .heading span{
+#homePart1 .maincontent .heading {
     font-size: 50px;
     font-weight: 700;
     position: relative;
-    background: linear-gradient(74deg, #1222ff, #ab10ff, #0bffa6);
+    background: linear-gradient(74deg, #0414ff,#b20bff 0%,  #08ffa5);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
 }
-#homePart1 .maincontent .heading .span span{
-    z-index: 0;
-}
 
-#homePart1 .maincontent .heading .span::before,
-#homePart1 .maincontent .content::before,
-#homePart1 .maincontent .StartButton::before
-{
-    content: '';
-    position: absolute;
-    width: 0%;
-    height: 100%;
-    top: 0;
-    right:0;
-    z-index: 1;
-    /* transform: translateX(-50%); */
-    background-color: #ffffff;
-    animation: slideAnimate 700ms ease-in 0s;
-}
-#homePart1 .maincontent .content{
+#homePart1 .maincontent .content {
     position: relative;
     font-size: 20px;
     font-weight: 500;
 }
-#homePart1 .maincontent .content span{
-    z-index: 0;
-}
-#homePart1 .maincontent .StartButton{
+
+#homePart1 .maincontent .StartButton {
     position: relative;
 }
-@keyframes slideAnimate{
-    0%{
+
+@keyframes TextBlur {
+    0% {
         opacity: 0;
-       width: 100%;
     }
-    30%{
+
+    100% {
         opacity: 1;
     }
-    100%{
-        opacity: 1;
-        width: 0%;
+}
+@media (max-width : 800px) {
+    #homePart1 .maincontent {
+        width: 80%;
+        padding: 20px 30px;
+        margin: 30px 30px;
     }
 }
 
-#homePart2{
-    background-image: linear-gradient(#4c60d8 , transparent);
-    transform: translateY(-10px);
+@media (max-width : 550px) {
+    #homePart1 .maincontent {
+        width: 90%;
+        padding: 20px 10px;
+        margin: 30px 0px;
+    }
+}
+
+#homePart2 {
+    min-height: 500px;
+    background-image: linear-gradient(#4c60d8, transparent 40%);
+    background-size: 100% 200%;
+    transform: translateY(-10px); 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+#homePart2 .content,
+#homePart3 .content {
+    display: flex;
+    justify-content: center;
+    height: auto;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 1s ease;
+}
+#homePart2 .content.visible,
+#homePart3 .content.visible{
+    opacity: 1;
+    transform: translateY(0px);
+}
+#homePart2 .content .text,
+#homePart3 .content .text {
+    width: 50%;
+    height: auto;
+    margin: 20px 30px;
+    position: relative;
+}
+
+#homePart2 .content .text .heading,
+#homePart3 .content .text .heading {
+    font-size: 50px;
+    font-weight: 700;
+    padding: 10px 15px;
+}
+#homePart2 .content .text .relatedContent,
+#homePart3 .content .text .relatedContent {
+    font-size: 20px;
+    font-weight: 500;
+    padding: 10px 15px;
+}
+
+#homePart2 .content .image,
+#homePart3 .content .image {
+    margin: 10px;
+    width: 30%;
+    display: flex;
+    align-items: center;
+}
+
+#homePart3{
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: end;
+}
+#homePart3 .box1{
+    position: absolute;
+    width:400px;
+    height: auto;
+    top: 80px;
+    right: -70px;
+    z-index: 0;
+}
+#homePart3 .box2{
+    position: absolute;
+    width:500px;
+    height: auto;
+    top: -50px;
+    left: -150px;
+    z-index: 0;
+}
+#homePart3 .box3{
+    position: absolute;
+    width:500px;
+    height: auto;
+    bottom: -100px;
+    right: -150px;
+    z-index: 0;
 }

@@ -4,12 +4,12 @@ import '../../css/home.css'
 
 const part1 = () => {
     return (
-        <div id='homePart1' className='' style={{ height: `${window.innerHeight - 50}px` }}>
+        <div id='homePart1' className=' overflow-x-hidden' style={{ height: `${window.innerHeight - 50}px` }}>
             <div className="frontBox w-100">
                 <div className="maincontent">
-                    <div className="heading p-2"><span className='span'><span>Class Vibe</span></span></div>
+                    <div className="heading p-2">Class Vibe</div>
                     <div className="content px-2 pb-3">
-                        <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi adipisci porro repellat sint soluta saepe quae</span>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi adipisci porro repellat sint soluta saepe quae
                     </div>
                     <div className="StartButton">
                         <button className="btn-53 rounded-3 z-0 mx-auto">
