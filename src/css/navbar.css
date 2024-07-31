@@ -1,12 +1,26 @@
+#navbar{
+    background-color: #fff0eb;
+}
 #navbar .name{
-    font-size: 30px;
-    font-weight: 800;
-    background: linear-gradient(74deg, #0414ff,#bf00ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
+    font-size: 25px;
+    font-weight: 700;
 }
 #navbar #profile{
     width: 40px;
+}
+#navbar .MenuAndProfile{
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#navbar #allMenu{
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#navbar #allMenu button{
+    z-index: 1;
+    margin-inline: 20px;
 }

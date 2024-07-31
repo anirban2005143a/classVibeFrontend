@@ -29,7 +29,7 @@ const index = () => {
     if(window.scrollY >= part1Height + part2Height){
       setisPart3Visible(true)
     }
-    if(window.scrollY >= part1Height + part2Height + (part3Height * 0.75)){
+    if(window.scrollY >= part1Height + part2Height + 80 + (part3Height * 0.75)){
       setisFooterVisible(true)
     }
    

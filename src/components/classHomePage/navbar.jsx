@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import userContext from '../../context/userContext'
 import '../../css/navbar.css'
 import defaultUserImg from '../../assets/defaultUser.png'
+import '../../css/importedCss.css'
 
 const navbar = () => {
 
@@ -11,9 +12,23 @@ const navbar = () => {
 
     return (
         <div id='navbar' className=' d-flex justify-content-between w-100 p-2 align-items-center'>
-            <div className="name">Class Vibe</div>
+            <div className="name" onClick={() => { nevigate("/") }}>Class Vibe</div>
             <div className="MenuAndProfile px-3">
-                <div id="allMenu"></div>
+                <div id="allMenu">
+                    <button>
+                        <span>Classrooms</span>
+                    </button>
+                    <button>
+                        <span>Media</span>
+                    </button>
+                    <button>
+                        <span>Ai Assistent</span>
+                    </button>
+                    <button>
+                        <span>Dashboard</span>
+                    </button>
+
+                </div>
                 <div id="profile">
                     <div className="dropdown w-100">
                         <a
