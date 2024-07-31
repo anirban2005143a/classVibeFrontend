@@ -1,6 +1,7 @@
 #homePart1 {
     width: 100%;
     min-height: 500px;
+    max-height: 800px;
     background-image: url(../assets/wave.png);
     background-size: 100% auto;
     background-position-y: bottom;
@@ -70,7 +71,7 @@
 
 #homePart2 {
     min-height: 500px;
-    background-image: linear-gradient(#4c60d8, transparent 40%);
+    background-image: linear-gradient(#466cd5, transparent 40%);
     background-size: 100% 200%;
     transform: translateY(-10px); 
     display: flex;

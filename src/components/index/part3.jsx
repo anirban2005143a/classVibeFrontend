@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../css/importedCss.css'
-import '../../css/home.css'
+import '../../css/index.css'
 import contentImg from '../../assets/email verification.jpg'
 
 const part3 = (props) => {

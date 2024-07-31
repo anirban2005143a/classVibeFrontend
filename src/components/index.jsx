@@ -1,11 +1,11 @@
 import React , {useState , useEffect , useRef} from 'react'
-import Part1 from './home/part1'
-import Part2 from './home/part2'
-import Part3 from './home/part3'
+import Part1 from './index/part1'
+import Part2 from './index/part2'
+import Part3 from './index/part3'
 import Footer from './footer'
-import '../css/home.css'
+import '../css/index.css'
 
-const home1 = () => {
+const index = () => {
 
   const part1ref = useRef()
   const part2ref = useRef()
@@ -23,11 +23,14 @@ const home1 = () => {
 
   // console.log(window.scrollY)
 
-    if(window.scrollY >= part1Height * 0.9){
+    if(window.scrollY >= part1Height * 0.8){
       setisPart2Visible(true)
     }
     if(window.scrollY >= part1Height + part2Height){
       setisPart3Visible(true)
+    }
+    if(window.scrollY >= part1Height + part2Height + (part3Height * 0.75)){
+      setisFooterVisible(true)
     }
    
  })
@@ -46,4 +49,4 @@ const home1 = () => {
   )
 }
 
-export default home1
+export default index

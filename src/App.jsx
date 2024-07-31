@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserContext from "./context/userContext";
 import getCookie from './components/functions/getCookie'
-import Home from "./components/home";
+// import Home from "./components/home";
 import Login from "./components/form/login";
 import Signup from "./components/form/signup";
 import About from "./components/about";
 import VideoGroup from "./components/videoGroup";
 import VerifyEmail from "./components/verfyandforget/verifyEmail";
 import ForgetPassword from "./components/verfyandforget/forgetPassword";
-import Home1 from "./components/home1";
+import Index from "./components/index";
+import Home from "./components/classHomePage/home";
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />
+      element: <Index />
     },
     {
       path: "/about",
@@ -60,7 +61,11 @@ function App() {
     },
     {
       path: "/hi",
-      element: <Home1 />
+      element: <Index />
+    },
+    {
+      path: "/home",
+      element: <Home />
     },
   ])
 

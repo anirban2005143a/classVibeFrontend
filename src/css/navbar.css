@@ -1,0 +1,12 @@
+#navbar .name{
+    font-size: 30px;
+    font-weight: 800;
+    background: linear-gradient(74deg, #0414ff,#bf00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+#navbar #profile{
+    width: 40px;
+}

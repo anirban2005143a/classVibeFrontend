@@ -1,8 +1,6 @@
 #footer{
     margin-top: 10%;
     background-color: #0d273d;
-    /* background-image: linear-gradient(white, #0d273d, #0d273d , #0d273d  ); */
-    background-size: 100% 250%;
     opacity: 0;
     transition: opacity 300ms ease-in-out;
 }

@@ -1,8 +1,10 @@
 import React from 'react'
 import '../../css/importedCss.css'
-import '../../css/home.css'
+import '../../css/index.css'
+import { useNavigate } from 'react-router-dom'
 
 const part1 = () => {
+    const navigate = useNavigate()
     return (
         <div id='homePart1' className=' overflow-x-hidden' style={{ height: `${window.innerHeight - 50}px` }}>
             <div className="frontBox w-100">
@@ -12,7 +14,9 @@ const part1 = () => {
                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi adipisci porro repellat sint soluta saepe quae
                     </div>
                     <div className="StartButton">
-                        <button className="btn-53 rounded-3 z-0 mx-auto">
+                        <button className="btn-53 rounded-3 z-0 mx-auto" onClick={()=>{
+                            navigate('/home')
+                        }}>
                             <div className="original">Get Started</div>
                             <div className="letters">
                                 <span>E</span>
