@@ -330,13 +330,14 @@
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid rgb(255,0,0);
+  border: 1px solid rgb(4, 0, 65);
   border-radius: 25px;
   outline: none;
   overflow: hidden;
-  color: rgb(255,0,0);
+  color: rgb(0, 0, 0);
   transition: color 0.3s 0.1s ease-out;
   text-align: center;
+  --boxShadowColor : black 
 }
 
 #navbar .MenuAndProfile #allMenu button span {
@@ -362,10 +363,153 @@
 }
 
 #navbar .MenuAndProfile #allMenu button:hover {
-  color: #fff;
-  border: 1px solid rgb(255,0,0);
+  color: #ffffff;
+  border: 1px solid rgb(22, 58, 93);
 }
 
 #navbar .MenuAndProfile #allMenu button:hover::before {
-  box-shadow: inset 0 0 0 10em rgb(255, 0, 0);
+  box-shadow: inset 0 0 0 10em rgb(22, 93, 68) ;
+}
+
+ 
+
+#homeContent #classContent .menuOption .btn-17,
+#homeContent #classContent .menuOption .btn-17 *,
+#homeContent #classContent .menuOption .btn-17 :after,
+#homeContent #classContent .menuOption .btn-17 :before,
+#homeContent #classContent .menuOption .btn-17:after,
+#homeContent #classContent .menuOption .btn-17:before {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+
+#homeContent #classContent .menuOption .btn-17 {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  /* background-color: #a20b0bb6; */
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+  /* -webkit-mask-image: -webkit-radial-gradient(#000, #fff); */
+  padding: 0;
+  text-transform: uppercase;
+}
+
+#homeContent #classContent .menuOption .btn-17:disabled {
+  cursor: default;
+}
+
+#homeContent #classContent .menuOption .btn-17:-moz-focusring {
+  outline: auto;
+}
+
+#homeContent #classContent .menuOption .btn-17 svg {
+  display: block;
+  vertical-align: middle;
+}
+
+#homeContent #classContent .menuOption .btn-17 [hidden] {
+  display: none;
+}
+
+#homeContent #classContent .menuOption .btn-17 {
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.5rem 1rem;
+  z-index: 0;
+}
+
+#homeContent #classContent .menuOption .btn-17,
+#homeContent #classContent .menuOption .btn-17 .text-container {
+  overflow: hidden;
+  position: relative;
+}
+
+#homeContent #classContent .menuOption .btn-17 .text-container {
+  display: block;
+}
+
+#homeContent #classContent .menuOption .btn-17 .text {
+  display: block;
+  position: relative;
+}
+
+#homeContent #classContent .menuOption .btn-17:hover .text {
+  color: black;
+  -webkit-animation: move-up-alternate 0.3s forwards;
+  animation: move-up-alternate 0.3s forwards;
+}
+
+@-webkit-keyframes move-up-alternate {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(80%);
+  }
+
+  51% {
+    transform: translateY(-80%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes move-up-alternate {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(80%);
+  }
+
+  51% {
+    transform: translateY(-80%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+#homeContent #classContent .menuOption .btn-17:after,
+#homeContent #classContent .menuOption .btn-17:before {
+  --skew: 0.2;
+  background: #ffffff;
+  content: "";
+  display: block;
+  height: 102%;
+  left: calc(-50% - 50% * var(--skew));
+  pointer-events: none;
+  position: absolute;
+  top: -104%;
+  transform: skew(calc(150deg * var(--skew))) translateY(var(--progress, 0));
+  transition: transform 0.2s ease;
+  width: 100%;
+}
+
+#homeContent #classContent .menuOption .btn-17:after {
+  --progress: 0%;
+  left: calc(50% + 50% * var(--skew));
+  top: 102%;
+  z-index: -1;
+}
+
+#homeContent #classContent .menuOption .btn-17:hover:before {
+  --progress: 100%;
+}
+
+#homeContent #classContent .menuOption .btn-17:hover:after {
+  --progress: -102%;
 }

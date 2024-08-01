@@ -19,9 +19,6 @@ const navbar = () => {
                         <span>Classrooms</span>
                     </button>
                     <button>
-                        <span>Media</span>
-                    </button>
-                    <button>
                         <span>Ai Assistent</span>
                     </button>
                     <button>

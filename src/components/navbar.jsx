@@ -16,7 +16,7 @@ const navbar = () => {
       <div className="name my-1 mx-2">
         ClassVibe
       </div>
-    {!window.location.pathname === "/hi" && <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2 user-select-none">
+      <div className="links d-flex justify-content-center align-items-center me-md-5 me-sm-4 me-2 user-select-none">
 
         <div className="home mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/" className={`text-decoration-none text-black ${location.pathname === "/" ? 'fw-semibold' : 'fw-normal'}`} >Home</Link></div>
         <div className="about mx-md-3 mx-2" style={{ cursor: "pointer" }}><Link to="/about" className={` text-decoration-none text-black  ${location.pathname === "/about" ? 'fw-semibold' : 'fw-normal'}`}>About</Link></div>
@@ -33,7 +33,7 @@ const navbar = () => {
             </svg>
           </div>
           <ul className="dropdown-menu translate-middle-x" style={{ minWidth: '100px', width: "100px" }}>
-          <li><Link to='/login' className="dropdown-item text-decoration-none" >Log-in</Link></li>
+            <li><Link to='/login' className="dropdown-item text-decoration-none" >Log-in</Link></li>
             <li><a className="dropdown-item" onClick={() => {
               logout()
               value.setislogout(true)
@@ -42,7 +42,7 @@ const navbar = () => {
           </ul>
         </div>
 
-      </div>}
+      </div>
     </nav>
   )
 }

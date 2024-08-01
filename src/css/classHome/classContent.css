@@ -1,0 +1,13 @@
+#classContent {
+    width: 82%;
+    height: 100%;
+}
+
+#classContent .menuOption {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.249);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+}

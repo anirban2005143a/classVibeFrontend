@@ -60,10 +60,6 @@ function App() {
       element: <ForgetPassword />
     },
     {
-      path: "/hi",
-      element: <Index />
-    },
-    {
       path: "/home",
       element: <Home />
     },

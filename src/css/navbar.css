@@ -1,5 +1,7 @@
 #navbar{
-    background-color: #fff0eb;
+    /* border-bottom: 1px solid rgba(128, 128, 128, 0.535); */
+    height: 3.5rem;
+    background-color: #42525814;
 }
 #navbar .name{
     font-size: 25px;

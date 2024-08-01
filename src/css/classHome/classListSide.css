@@ -1,0 +1,42 @@
+#classListSide{
+    width: 28%;
+    height: 100%;
+    /* background-color: #82828230; */
+    border-right: 1px solid rgba(0, 0, 0, 0.353);
+    position: relative;
+}
+#classListSide .classList ul{
+}
+#classListSide .classList ul li{
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+}
+#classListSide .classList ul li .classIcon{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(14, 60, 120);
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 50%;
+    color: white;
+}
+#classListSide .classList ul li .className{
+    --backgrouundColor : black
+    min-height: 40px;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    padding:5px 10px;
+    cursor: pointer;
+    transition:  background-color 300ms ease;
+}
+/* #classListSide .classList ul li .className:hover{
+    background-color: var(--backgrouundColor);
+} */
