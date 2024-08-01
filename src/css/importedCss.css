@@ -337,7 +337,7 @@
   color: rgb(0, 0, 0);
   transition: color 0.3s 0.1s ease-out;
   text-align: center;
-  --boxShadowColor : black 
+  --boxShadowColor :"" ;
 }
 
 #navbar .MenuAndProfile #allMenu button span {
@@ -368,7 +368,7 @@
 }
 
 #navbar .MenuAndProfile #allMenu button:hover::before {
-  box-shadow: inset 0 0 0 10em rgb(22, 93, 68) ;
+  box-shadow: inset 0 0 0 10em var(--boxShadowColor) ;
 }
 
  

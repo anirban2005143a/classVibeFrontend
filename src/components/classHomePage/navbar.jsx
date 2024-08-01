@@ -10,6 +10,17 @@ const navbar = () => {
     const value = useContext(userContext)
     const nevigate = useNavigate()
 
+    useEffect(() => {
+      const arr = Array.from(document.querySelectorAll("#navbar .MenuAndProfile button"))
+      arr.forEach((item)=>{
+        const red = Math.random() * 100 + 20
+        const green = Math.random() * 100 + 20
+        const blue = Math.random() * 100 + 20
+        item.style.setProperty("--boxShadowColor" , `rgb(${red} , ${green} , ${blue})`)
+      })
+    }, [])
+    
+
     return (
         <div id='navbar' className=' d-flex justify-content-between w-100 p-2 align-items-center'>
             <div className="name" onClick={() => { nevigate("/") }}>Class Vibe</div>
