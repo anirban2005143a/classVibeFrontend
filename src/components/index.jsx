@@ -17,9 +17,9 @@ const index = () => {
   const [isFooterVisible, setisFooterVisible] = useState(false)
 
  window.addEventListener('scroll' , ()=>{
-  const part1Height = document.querySelector('#homePart1').clientHeight
-  const part2Height = document.querySelector('#homePart2').clientHeight
-  const part3Height = document.querySelector('#homePart3').clientHeight
+  const part1Height = document.querySelector('#indexPart1').clientHeight
+  const part2Height = document.querySelector('#indexPart2').clientHeight
+  const part3Height = document.querySelector('#indexPart3').clientHeight
 
   // console.log(window.scrollY)
 
@@ -29,7 +29,7 @@ const index = () => {
     if(window.scrollY >= part1Height + part2Height){
       setisPart3Visible(true)
     }
-    if(window.scrollY >= part1Height + part2Height + 80 + (part3Height * 0.75)){
+    if(window.scrollY >= part1Height + part2Height + (part3Height * 0.75)){
       setisFooterVisible(true)
     }
    

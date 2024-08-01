@@ -1,4 +1,4 @@
-#homePart1 {
+#indexPart1 {
     width: 100%;
     min-height: 500px;
     max-height: 800px;
@@ -8,12 +8,12 @@
     background-repeat: no-repeat;
 }
 
-#homePart1 .frontBox {
+#indexPart1 .frontBox {
     display: flex;
     justify-content: center;
 }
 
-#homePart1 .maincontent {
+#indexPart1 .maincontent {
     width: 60%;
     padding: 20px 50px;
     margin: 30px 50px;
@@ -23,7 +23,7 @@
     animation: TextBlur 800ms ease-in-out;
 }
 
-#homePart1 .maincontent .heading {
+#indexPart1 .maincontent .heading {
     font-size: 50px;
     font-weight: 700;
     position: relative;
@@ -34,13 +34,13 @@
     color: transparent;
 }
 
-#homePart1 .maincontent .content {
+#indexPart1 .maincontent .content {
     position: relative;
     font-size: 20px;
     font-weight: 500;
 }
 
-#homePart1 .maincontent .StartButton {
+#indexPart1 .maincontent .StartButton {
     position: relative;
 }
 
@@ -55,7 +55,7 @@
 }
 
 
-#homePart2 {
+#indexPart2 {
     min-height: 500px;
     background-image: linear-gradient(#466cd5, transparent 40%);
     background-size: 100% 200%;
@@ -65,60 +65,60 @@
     overflow: hidden;
 }
 
-#homePart2 .content,
-#homePart3 .content {
+#indexPart2 .content,
+#indexPart3 .content {
     display: flex;
     justify-content: center;
     height: auto;
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(100px);
     transition: all 1s ease;
 }
 
-#homePart2 .content.visible,
-#homePart3 .content.visible {
+#indexPart2 .content.visible,
+#indexPart3 .content.visible {
     opacity: 1;
     transform: translateY(0px);
 }
 
-#homePart2 .content .text,
-#homePart3 .content .text {
+#indexPart2 .content .text,
+#indexPart3 .content .text {
     width: 50%;
     height: auto;
     margin: 20px 30px;
     position: relative;
 }
 
-#homePart2 .content .text .heading,
-#homePart3 .content .text .heading {
+#indexPart2 .content .text .heading,
+#indexPart3 .content .text .heading {
     font-size: 50px;
     font-weight: 700;
     padding: 10px 15px;
 }
 
-#homePart2 .content .text .relatedContent,
-#homePart3 .content .text .relatedContent {
+#indexPart2 .content .text .relatedContent,
+#indexPart3 .content .text .relatedContent {
     font-size: 20px;
     font-weight: 500;
     padding: 10px 15px;
 }
 
-#homePart2 .content .image,
-#homePart3 .content .image {
+#indexPart2 .content .image,
+#indexPart3 .content .image {
     margin: 10px;
     width: 35%;
     display: flex;
     align-items: center;
 }
 
-#homePart3 {
+#indexPart3 {
     min-height: 500px;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: end;
 }
-#homePart3 .box1 {
+#indexPart3 .box1 {
     position: absolute;
     width: 400px;
     height: auto;
@@ -127,7 +127,7 @@
     z-index: 0;
 }
 
-#homePart3 .box2 {
+#indexPart3 .box2 {
     position: absolute;
     width: 500px;
     height: auto;
@@ -136,7 +136,7 @@
     z-index: 0;
 }
 
-#homePart3 .box3 {
+#indexPart3 .box3 {
     position: absolute;
     width: 500px;
     height: auto;
@@ -146,112 +146,112 @@
 }
 
 @media (max-width : 800px) {
-    #homePart1 .maincontent {
+    #indexPart1 .maincontent {
         width: 80%;
         padding: 20px 30px;
         margin: 30px 30px;
     }
 
-    #homePart2 .content .text,
-    #homePart3 .content .text {
+    #indexPart2 .content .text,
+    #indexPart3 .content .text {
         width: 60%;
     }
 
-    #homePart2 .content .text .heading,
-    #homePart3 .content .text .heading {
+    #indexPart2 .content .text .heading,
+    #indexPart3 .content .text .heading {
         font-size: 45px;
     }
 
-    #homePart2 .content .text .relatedContent,
-    #homePart3 .content .text .relatedContent {
+    #indexPart2 .content .text .relatedContent,
+    #indexPart3 .content .text .relatedContent {
         font-size: 18px;
     }
 }
 
 @media (max-width:700px) {
-    #homePart1 {
+    #indexPart1 {
         background-size: auto 50%;
     }
 
-    #homePart2 .content.visible {
+    #indexPart2 .content.visible {
         transform: translateY(50px);
     }
 
-    #homePart2 .content {
+    #indexPart2 .content {
         display: flex;
         flex-direction: column-reverse;
         align-items: center;
     }
-    #homePart3{
+    #indexPart3{
         overflow-y: visible;
         overflow-x: hidden;
         align-items: center;
         min-height: 750px;
     }
-    #homePart3 .content {
+    #indexPart3 .content {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    #homePart2 .content .image,
-    #homePart3 .content .image {
+    #indexPart2 .content .image,
+    #indexPart3 .content .image {
         width: 55%;
     }
 
-    #homePart2 .content .text,
-    #homePart3 .content .text {
+    #indexPart2 .content .text,
+    #indexPart3 .content .text {
         width: 90%;
         text-align: center;
     }
-    #homePart3 .box1 {
+    #indexPart3 .box1 {
         width: 350px;
         right: -100px;
     }
-    #homePart3 .box2 {
+    #indexPart3 .box2 {
         top: 0px;
         width: 380px;
     }
-    #homePart3 .content.visible {
+    #indexPart3 .content.visible {
         transform: translateY(80px);
     }
 }
 
 @media (max-width : 550px) {
-    #homePart1 .maincontent {
+    #indexPart1 .maincontent {
         width: 90%;
         padding: 20px 10px;
         margin: 0px 0px;
     }
-    #homePart2 .content .text .heading,
-    #homePart3 .content .text .heading {
+    #indexPart2 .content .text .heading,
+    #indexPart3 .content .text .heading {
         font-size: 38px;
         margin-inline: 0px;
         padding-inline: 0;
     }
 
-    #homePart2 .content .text .relatedContent,
-    #homePart3 .content .text .relatedContent {
+    #indexPart2 .content .text .relatedContent,
+    #indexPart3 .content .text .relatedContent {
         font-size: 18px;
     }
-    #homePart3{
+    #indexPart3{
         min-height: 600px;
         max-height: none;
         align-items: center;
     }
-    #homePart2{
+    #indexPart2{
         min-height: 600px;
     }
-    #homePart3 .box1 {
+    #indexPart3 .box1 {
         width: 300px;
         right: -80px;
     }
-    #homePart3 .box2 {
+    #indexPart3 .box2 {
         top: 0px;
         width: 380px;
         left: -150px;
     }
-    #homePart3 .content.visible {
+    #indexPart3 .content.visible {
         transform: translateY(30px);
     }
    

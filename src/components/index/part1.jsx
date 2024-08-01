@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const part1 = () => {
     const navigate = useNavigate()
     return (
-        <div id='homePart1' className=' overflow-x-hidden' style={{ height: `${window.innerHeight - 50}px` }}>
+        <div id='indexPart1' className=' overflow-x-hidden' style={{ height: `${window.innerHeight - 50}px` }}>
             <div className="frontBox w-100">
                 <div className="maincontent">
                     <div className="heading p-2">Class Vibe</div>

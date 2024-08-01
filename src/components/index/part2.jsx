@@ -6,7 +6,7 @@ import contentImg from '../../assets/email verification.jpg'
 
 const part2 = (props) => {
   return (
-    <div id='homePart2' className={`overflow-x-hidden `} style={{ height: `${window.innerHeight}px` }}>
+    <div id='indexPart2' className={`overflow-x-hidden `} style={{ height: `${window.innerHeight}px` }}>
       <div className={`content w-100 ${props.isPart2Visible ? 'visible' : ""} `}>
         <div className="text">
           <div className="heading">my name anirban</div>
